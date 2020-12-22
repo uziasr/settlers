@@ -1,25 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import { Client } from 'boardgame.io/react';
+import { Catan } from './Game';
+import { TicTacToeBoard } from "./Board"
+import HexGrid from "./HexGrid"
+// import { h3ToGeo } from "h3-js";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+// console.log(h3ToGeo)
+
+// const App = Client({ game: Catan, board: TicTacToeBoard });
+const App = () => (<HexGrid/>)
+
 
 export default App;

@@ -1,0 +1,50 @@
+$hex-size: 5em;
+.container {
+    margin:0 auto;
+    margin-top: 100px;
+    width: 1000px; 
+    line-height: 1.3;
+    // transform: rotate(90deg);
+  }
+  ol.even {
+    position: relative;
+    left: ($hex-size / 1.1);
+  }
+  ol.odd {
+    position: relative;
+    margin-top: -6.5%;
+    margin-bottom: -6.5%;
+  }
+  .hex {
+    position: relative;
+    margin: 1em auto;
+    width: $hex-size; height: ($hex-size * 1.7);
+    border-radius: 1em/.5em;
+    // background-image: url("https://snappygoat.com/b/2efc7baf0724ddb48563100074855b91e2cb535a");
+    // background-repeat: no-repeat;
+    transform: rotate(-90deg);
+    display: inline-block;
+    margin-right: ($hex-size / 1.30);
+    transition: all 150ms ease-in-out;
+  }
+  .hex:before, .hex:after {
+    position: absolute;
+    width: inherit; height: inherit;
+    border-radius: inherit;
+    background: inherit;
+    content: '';
+  }
+  .hex:before {
+    transform: rotate(60deg);
+  }
+  .hex:after {
+    transform: rotate(-60deg);
+  }
+  .hex:hover {
+    // background: #F58787;
+    cursor: pointer;
+  }
+  .hidden{
+    // background-color: white !important;
+    visibility: hidden;
+  }

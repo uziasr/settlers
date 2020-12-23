@@ -220,16 +220,16 @@ class Board {
         currentTile.edges[this.numHashGet(currentTilePointer)].tiles.push(currentTile)
     }
 
-    distributeResources(roll) {
-        let tilesCalled = this.rolls[roll]
-        for (let tile of tilesCalled) {
-            if (!tile.blocked) {
-                Object.keys(tile.edges).forEach(edge => {
-                    tile[edge].placement
-                })
-            }
-        }
-    }
+    // distributeResources(roll) {
+    //     let tilesCalled = this.rolls[roll]
+    //     for (let tile of tilesCalled) {
+    //         if (!tile.blocked) {
+    //             Object.keys(tile.edges).forEach(edge => {
+    //                 tile[edge].placement
+    //             })
+    //         }
+    //     }
+    // }
 
     createBoard() {
         this.createCenterTile()
@@ -240,5 +240,4 @@ class Board {
 }
 
 let board = new Board()
-// board.createBoard()
 export default board

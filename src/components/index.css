@@ -5,13 +5,46 @@
     box-sizing: border-box;
 }
 
+.table {
+    background-color: #75baf3;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.rollRoot {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
+.dice {
+    display: flex;
+}
+.rollButton{
+    padding: 5px 7px;
+}
+.dice p{
+    transition: 1s;
+}
+
+.die {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin: 5px;
+    border: 2px solid black;
+}
+
 .board {
     display: flex;
     align-content: flex-start;
     flex-direction: column;
-    background-color: #75baf3;
+
     height: 1000px;
-    width: 100%;
+
 }
 
 .board-row {
@@ -33,7 +66,7 @@
     padding-right: 16px;
 }
 
-.port-right{
+.port-right {
     padding-left: 16px;
 }
 
@@ -43,7 +76,8 @@
 
 .territory:before {
     content: " ";
-    width: 0; height: 0;
+    width: 0;
+    height: 0;
     border-bottom: 30px solid;
     border-left: 52px solid transparent;
     border-right: 52px solid transparent;
@@ -58,7 +92,7 @@
     margin-top: 50px;
     margin-bottom: -20px;
     width: 104px;
-    height: 60px;   
+    height: 60px;
     position: relative;
     border: 1px solid #75baf3;
 }
@@ -73,7 +107,7 @@
     border-right: 52px solid transparent;
 }
 
-.territory:hover{
+.territory:hover {
     font-weight: 800;
     box-shadow: 4px solid lightslategrey;
 }
@@ -104,47 +138,59 @@
 }
 
 
-.territory-type-Mountain, .territory-type-Mountain:before, .territory-type-Mountain:after{
+.territory-type-Mountain,
+.territory-type-Mountain:before,
+.territory-type-Mountain:after {
     background-color: rgb(59, 59, 59);
     border-bottom-color: rgb(59, 59, 59);
     border-top-color: rgb(59, 59, 59);
 }
 
-.territory-type-Forest, .territory-type-Forest:before, .territory-type-Forest:after {
+.territory-type-Forest,
+.territory-type-Forest:before,
+.territory-type-Forest:after {
     background-color: rgb(3, 77, 0);
     border-bottom-color: rgb(3, 77, 0);
     border-top-color: rgb(3, 77, 0);
 }
 
-.territory-type-Pasture, .territory-type-Pasture:before, .territory-type-Pasture:after {
+.territory-type-Pasture,
+.territory-type-Pasture:before,
+.territory-type-Pasture:after {
     background-color: rgb(157, 214, 145);
     border-bottom-color: rgb(157, 214, 145);
     border-top-color: rgb(157, 214, 145);
 }
 
-.territory-type-Hills, .territory-type-Hills:before, .territory-type-Hills:after {
+.territory-type-Hills,
+.territory-type-Hills:before,
+.territory-type-Hills:after {
     background-color: rgb(77, 0, 0);
     border-bottom-color: rgb(77, 0, 0);
     border-top-color: rgb(77, 0, 0);
 }
 
-.territory-type-Fields, .territory-type-Fields:before, .territory-type-Fields:after {
+.territory-type-Fields,
+.territory-type-Fields:before,
+.territory-type-Fields:after {
     background-color: rgb(252, 249, 102);
     border-bottom-color: rgb(252, 249, 102);
     border-top-color: rgb(252, 249, 102);
 }
 
-.territory-type-Desert, .territory-type-Desert:before, .territory-type-Desert:after{
+.territory-type-Desert,
+.territory-type-Desert:before,
+.territory-type-Desert:after {
     background-color: rgb(223, 200, 159);
     border-bottom-color: rgb(223, 200, 159);
     border-top-color: rgb(223, 200, 159);
 }
 
-.territory-type-Desert .number-token{
-    visibility: hidden;
+.territory-type-Desert .number-token {
+    background: rgb(223, 200, 159);
 }
-
 /* overrides definitions above */
-.territory:before, .territory:after{
+.territory:before,
+.territory:after {
     background-color: transparent;
 }

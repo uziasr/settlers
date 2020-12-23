@@ -2,6 +2,7 @@ import React from 'react';
 import './index.css';
 // import _ from 'lodash';
 import board from "./gameLogic"
+import Dice from "./Dice"
 
 class Territory extends React.Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class Territory extends React.Component {
             <div className={classname} >
                 <div className="number-token">
                     {Object.keys(this.props.nodes).map(nodeIndex => (
-                        <div style={{...this.props.nodeHash[nodeIndex], cursor:"pointer"}} onClick={()=>console.log(this.props.nodes[nodeIndex])}>
+                        <div style={{ ...this.props.nodeHash[nodeIndex], cursor: "pointer" }} onClick={() => console.log(this.props.nodes[nodeIndex])}>
                             <p>o</p>
                         </div>
                     ))}
@@ -67,7 +68,7 @@ class Board extends React.Component {
                     left: "45px"
                 },
                 "6": {
-                    position: "absolute", bottom: "-10px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
+                    position: "absolute", bottom: "-11px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
                     left: "-5px"
                 }
             }
@@ -94,66 +95,69 @@ class Board extends React.Component {
 
     render() {
         return (
-            <div className="board">
-                <div className="board-row">
-                    <div className="spacer"></div>
-                    <div className="port port-left" style={{ top: "25px" }}>?</div>
-                    <div className="spacer"></div>
-                    <div className="port port-left">🐑</div>
-                    <div className="spacer"></div>
-                    <div className="spacer"></div>
+            <div className="table" style={{ display: "flex" }}>
+                <div className="board">
+                    <div className="board-row">
+                        <div className="spacer"></div>
+                        <div className="port port-left" style={{ top: "25px" }}>?</div>
+                        <div className="spacer"></div>
+                        <div className="port port-left">🐑</div>
+                        <div className="spacer"></div>
+                        <div className="spacer"></div>
+                    </div>
+                    <div className="board-row">
+                        <div className="spacer"></div>
+                        <div className="spacer"></div>
+                        {this.renderTerritory(0)}
+                        {this.renderTerritory(1)}
+                        {this.renderTerritory(2)}
+                        <div className="port port-right">⛏</div>
+                        <div className="spacer"></div>
+                    </div>
+                    <div className="board-row">
+                        <div className="port port-left">🌲</div>
+                        {this.renderTerritory(3)}
+                        {this.renderTerritory(4)}
+                        {this.renderTerritory(5)}
+                        {this.renderTerritory(6)}
+                        <div className="spacer"></div>
+                    </div>
+                    <div className="board-row">
+                        <div className="spacer"></div>
+                        {this.renderTerritory(7)}
+                        {this.renderTerritory(8)}
+                        {this.renderTerritory(9)}
+                        {this.renderTerritory(10)}
+                        {this.renderTerritory(11)}
+                        <div className="port port-right">🐑</div>
+                    </div>
+                    <div className="board-row">
+                        <div className="port port-left">🌾</div>
+                        {this.renderTerritory(12)}
+                        {this.renderTerritory(13)}
+                        {this.renderTerritory(14)}
+                        {this.renderTerritory(15)}
+                        <div className="spacer"></div>
+                    </div>
+                    <div className="board-row">
+                        <div className="spacer"></div>
+                        <div className="spacer"></div>
+                        {this.renderTerritory(16)}
+                        {this.renderTerritory(17)}
+                        {this.renderTerritory(18)}
+                        <div className="port port-right">🧱</div>
+                        <div className="spacer"></div>
+                    </div>
+                    <div className="board-row">
+                        <div className="spacer"></div>
+                        <div className="port port-left">?</div>
+                        <div className="spacer"></div>
+                        <div className="port port-left">🐑</div>
+                        <div className="spacer"></div>
+                        <div className="spacer"></div>
+                    </div>
                 </div>
-                <div className="board-row">
-                    <div className="spacer"></div>
-                    <div className="spacer"></div>
-                    {this.renderTerritory(0)}
-                    {this.renderTerritory(1)}
-                    {this.renderTerritory(2)}
-                    <div className="port port-right">⛏</div>
-                    <div className="spacer"></div>
-                </div>
-                <div className="board-row">
-                    <div className="port port-left">🌲</div>
-                    {this.renderTerritory(3)}
-                    {this.renderTerritory(4)}
-                    {this.renderTerritory(5)}
-                    {this.renderTerritory(6)}
-                    <div className="spacer"></div>
-                </div>
-                <div className="board-row">
-                    <div className="spacer"></div>
-                    {this.renderTerritory(7)}
-                    {this.renderTerritory(8)}
-                    {this.renderTerritory(9)}
-                    {this.renderTerritory(10)}
-                    {this.renderTerritory(11)}
-                    <div className="port port-right">🐑</div>
-                </div>
-                <div className="board-row">
-                    <div className="port port-left">🌾</div>
-                    {this.renderTerritory(12)}
-                    {this.renderTerritory(13)}
-                    {this.renderTerritory(14)}
-                    {this.renderTerritory(15)}
-                    <div className="spacer"></div>
-                </div>
-                <div className="board-row">
-                    <div className="spacer"></div>
-                    <div className="spacer"></div>
-                    {this.renderTerritory(16)}
-                    {this.renderTerritory(17)}
-                    {this.renderTerritory(18)}
-                    <div className="port port-right">🧱</div>
-                    <div className="spacer"></div>
-                </div>
-                <div className="board-row">
-                    <div className="spacer"></div>
-                    <div className="port port-left">?</div>
-                    <div className="spacer"></div>
-                    <div className="port port-left">🐑</div>
-                    <div className="spacer"></div>
-                    <div className="spacer"></div>
-                </div>
+                <Dice />
             </div>
         )
     }

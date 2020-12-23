@@ -73,7 +73,7 @@ class Board {
         this.tiles = []
         this.centerTile = null;
         this.graph = new Graph(57)
-        this.terrains = this.shuffle([
+        this.terrains = [
             "Hills", "Mountain", "Hills",
             "Fields", "Forest", "Forest",
             "Fields", "Forest", "Pasture",
@@ -81,7 +81,7 @@ class Board {
             "Fields", "Fields", "Mountain",
             "Pasture", "Pasture", "Desert",
             "Forest"
-        ])
+        ]
         this.numberChits = [
             11, 3, 6,
             5, 4, 9, 10,
@@ -153,6 +153,9 @@ class Board {
             this.rolls[`${tile.roll}`].push(tile)
         }
         return tile
+    }
+    shuffleTilesAndNum() {
+
     }
 
     createCenterTile() {
@@ -243,12 +246,21 @@ class Board {
         currentTile.edges[this.numHashGet(currentTilePointer)].tiles.push(currentTile)
     }
 
-    shuffle(a) {
+    shuffle(a = this.terrains) {
         for (let i = a.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [a[i], a[j]] = [a[j], a[i]];
         }
-        return a;
+        this.terrains = a
+        // let innerLayer = this.numberChits.slice(1, 7)
+        // let outerLayer = this.numberChits.slice(7, this.terrains.length)
+        let shift = (Math.floor(Math.random() * 6) + 1)
+        console.log(this.numberChits.slice(0, 7), this.numberChits.slice(7), shift)
+        let newInner = [...this.numberChits.slice(shift, 7), ...this.numberChits.slice(1, shift)]
+        let newOuter = [...this.numberChits.slice(shift + 7, this.numberChits.length), ...this.numberChits.slice(7, shift + 7)]
+        // this.numberChits = [this.numberChits[0], ...newInner, ...newOuter]
+        console.log(newInner, newOuter)
+
     }
 
     // distributeResources(roll) {
@@ -264,6 +276,7 @@ class Board {
     // }
 
     createBoard() {
+        this.shuffle()
         this.createCenterTile()
         this.createInnerLayer()
         this.createOuterLayer()

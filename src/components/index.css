@@ -1,0 +1,150 @@
+* {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.board {
+    display: flex;
+    align-content: flex-start;
+    flex-direction: column;
+    background-color: #75baf3;
+    height: 1000px;
+    width: 100%;
+}
+
+.board-row {
+    display: flex;
+    justify-content: center;
+    width: 1000px;
+}
+
+.port {
+    width: 104px;
+    position: relative;
+    top: 50px;
+    padding-top: 10px;
+    font-size: 2em;
+}
+
+.port-left {
+    text-align: right;
+    padding-right: 16px;
+}
+
+.port-right{
+    padding-left: 16px;
+}
+
+.spacer {
+    width: 104px;
+}
+
+.territory:before {
+    content: " ";
+    width: 0; height: 0;
+    border-bottom: 30px solid;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
+    position: absolute;
+    top: -30px;
+}
+
+.territory {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: -20px;
+    width: 104px;
+    height: 60px;   
+    position: relative;
+    border: 1px solid #75baf3;
+}
+
+.territory:after {
+    content: "";
+    width: 0;
+    position: absolute;
+    bottom: -30px;
+    border-top: 30px solid;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
+}
+
+.territory:hover{
+    font-weight: 800;
+    box-shadow: 4px solid lightslategrey;
+}
+
+.number-token {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-color: #ffe9cc;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.prob-5 {
+    color: rgb(190, 16, 16);
+}
+
+.number {
+    text-align: center;
+}
+
+.probability-ticks {
+    font-size: .7em;
+    font-weight: bold;
+}
+
+
+.territory-type-Mountain, .territory-type-Mountain:before, .territory-type-Mountain:after{
+    background-color: rgb(59, 59, 59);
+    border-bottom-color: rgb(59, 59, 59);
+    border-top-color: rgb(59, 59, 59);
+}
+
+.territory-type-Forest, .territory-type-Forest:before, .territory-type-Forest:after {
+    background-color: rgb(3, 77, 0);
+    border-bottom-color: rgb(3, 77, 0);
+    border-top-color: rgb(3, 77, 0);
+}
+
+.territory-type-Pasture, .territory-type-Pasture:before, .territory-type-Pasture:after {
+    background-color: rgb(157, 214, 145);
+    border-bottom-color: rgb(157, 214, 145);
+    border-top-color: rgb(157, 214, 145);
+}
+
+.territory-type-Hills, .territory-type-Hills:before, .territory-type-Hills:after {
+    background-color: rgb(77, 0, 0);
+    border-bottom-color: rgb(77, 0, 0);
+    border-top-color: rgb(77, 0, 0);
+}
+
+.territory-type-Fields, .territory-type-Fields:before, .territory-type-Fields:after {
+    background-color: rgb(252, 249, 102);
+    border-bottom-color: rgb(252, 249, 102);
+    border-top-color: rgb(252, 249, 102);
+}
+
+.territory-type-Desert, .territory-type-Desert:before, .territory-type-Desert:after{
+    background-color: rgb(223, 200, 159);
+    border-bottom-color: rgb(223, 200, 159);
+    border-top-color: rgb(223, 200, 159);
+}
+
+.territory-type-Desert .number-token{
+    visibility: hidden;
+}
+
+/* overrides definitions above */
+.territory:before, .territory:after{
+    background-color: transparent;
+}

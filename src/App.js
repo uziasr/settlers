@@ -1,14 +1,13 @@
 import { Client } from 'boardgame.io/react';
 import { Catan } from './Game';
 import { TicTacToeBoard } from "./Board"
-import HexGrid from "./HexGrid"
 import GameBoard from "./components/GameBoard"
 // import { h3ToGeo } from "h3-js";
 
 // console.log(h3ToGeo)
 
 // const App = Client({ game: Catan, board: TicTacToeBoard });
-const App = () => (<GameBoard/>)
+const App = Client({ game: Catan, board: GameBoard });
 
 
 export default App;

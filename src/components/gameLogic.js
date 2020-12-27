@@ -7,9 +7,9 @@ class Node {
         }
         this.canBuild = true
     }
-    toString() {
-        return `[${this.tiles}]`
-    }
+    // toString() {
+    //     return `[${this.tiles}]`
+    // }
 }
 
 class Graph {
@@ -263,28 +263,59 @@ class Board {
 
     }
 
-    // distributeResources(roll) {
-    //     let tilesCalled = this.rolls[roll]
-    //     for (let tile of tilesCalled) {
-    //         if (!tile.blocked) {
-    //             Object.keys(tile.edges).forEach(edge => {
-    //                 tile[edge].placement
-    //             })
-    //         }
-    //     }
-    //     return
-    // }
-
     createBoard() {
         this.shuffle()
         this.createCenterTile()
         this.createInnerLayer()
         this.createOuterLayer()
         this.createLastTile()
+        for (let node of this.graph.adjList) {
+            node[0].tiles = []
+        }
+    }
+}
+
+class BuildItem {
+    constructor(itemType, color) { // can be roads, settlements, or cities
+        this.item = itemType
+        this.color = color
+    }
+    decrement() {
+        this.quantity--
+    }
+    increment() {
+        this.quantity++
+    }
+}
+
+class Player {
+    constructor(name, color) {
+        this.name = name
+        this.color = color
+        this.roads = Array.from({ length: 15 }, (_) => new BuildItem("road", color))
+        this.settlements = Array.from({ length: 15 }, (_) => new BuildItem("settlement", color))
+        this.cities = Array.from({ length: 15 }, (_) => new BuildItem("city", color))
+        this.cards = {
+            "wood": 0,
+            "brick": 0,
+            "hay": 0,
+            "sheep": 0,
+            "mineral": 0
+        }
+        this.handQuantity = Object.keys(this.cards).reduce((acc, curr) => acc + this.cards[curr], 0)
+        this.points = 0
+        this.turn = false
+    }
+    toString() {
+        return `Player(name=${this.name}, color=${this.color})`
     }
 }
 
 let board = new Board()
 board.createBoard()
+console.log(Player)
 
-export default board
+export { board, Player }
+
+
+

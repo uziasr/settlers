@@ -239,5 +239,96 @@ class Board {
     }
 }
 
-let board = new Board()
-export default board
+class BuildItem {
+    constructor(itemType, color) { // can be roads, settlements, or cities
+        this.item = itemType
+        this.color = color
+    }
+    decrement() {
+        this.quantity--
+    }
+    increment() {
+        this.quantity++
+    }
+}
+
+export class Player {
+    constructor(name, color) {
+        this.name = name
+        this.color = color
+        this.roads = Array.from({ length: 15 }, (_) => new BuildItem("road", color))
+        this.settlements = Array.from({ length: 15 }, (_) => new BuildItem("settlement", color))
+        this.cities = Array.from({ length: 15 }, (_) => new BuildItem("city", color))
+        this.cards = {
+            "wood": 0,
+            "brick": 0,
+            "hay": 0,
+            "sheep": 0,
+            "mineral": 0
+        }
+        this.handQuantity = Object.keys(this.cards).reduce((acc, curr) => acc + this.cards[curr], 0)
+        this.points = 0
+        this.turn = false
+    }
+    toString() {
+        return `Player(name=${this.name}, color=${this.color})`
+    }
+}
+    // }
+    // buildCity(node) {
+    //     if (this.cities.length) {
+    //         // this.cities.decrement()
+    //         // this.settlements.increment()
+    //         // node.placement = 
+    //         this.points++
+    //     }
+    // }
+    // buildSettlement(node, board, initial = false) {
+    //     if (this.settlements.length) {
+    //         // this.settlements.increment()
+    //         node.placement = this.settlements.pop()
+    //         for (let adjacentNodes of board.graph.adjList.get(node)) adjacentNodes.canBuild = false
+    //         this.points++
+    //     }
+    // }
+    // buildRoad(fromNode, toNode) {
+    //     if (this.roads.length) {
+    //         this.roads.decrement()
+    //     }
+    // }
+    // getDevelopmentCard() {
+
+    // }
+    // useDevelopmentCard() {
+
+    // }
+    // discardHalf() {
+
+    // }
+    // robPlayer(player) {
+
+    // }
+    // roll(initial = false, game) {
+    //     let roll = (Math.floor(Math.random() * 6) + 1) + (Math.floor(Math.random() * 6) + 1)
+    //     console.log(roll)
+    //     if (initial) {
+    //         return roll
+    //     } else {
+    //         if (roll === 7) {
+    //             return
+    //         }
+    //         return game.distributeResources(roll)
+    //     }
+    // }
+    // takeTurn() {
+    //     // add like a setTimeOut for the players turn
+    // }
+    // endTurn() {
+
+    // }
+// }
+
+
+// let board = new Board()
+let players = [new Player("bill", "white"), new Player("Alex", "red"), new Player("Fern", "blue"), new Player("Daren", "orange")]
+export { board, players }

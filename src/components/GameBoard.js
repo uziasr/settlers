@@ -1,14 +1,52 @@
 import React from 'react';
 import './index.css';
 // import _ from 'lodash';
-import board from "./gameLogic"
-import Dice from "./Dice"
+import { board } from "./gameLogic"
+import ActiveTurn from "./ActiveTurn"
+import Nodes from "./Nodes"
 
-class Territory extends React.Component {
+// board.createBoard()
+
+class Territory extends React.PureComponent {
     constructor(props) {
         super(props)
-
     }
+    nodeRender() {
+        return (
+            <>
+                {Object.keys(this.props.nodes).map((nodeIndex, index) => {
+                    console.log(nodeIndex)
+                    return <div key={index} style={{ ...this.props.nodeHash[nodeIndex], cursor: "pointer" }} onClick={() => console.log(this.props.nodes[nodeIndex])}>
+                        <p>o</p>
+                    </div>
+                }
+                )}
+            </>
+        )
+    }
+
+    nodeAction = (node) => {
+        switch (this.props.buildType) {
+            case "road": {
+                return
+                
+            }
+            case "settlement": {
+                this.props.moves.buildSettlement(node)
+                console.log(node)
+                return 
+            }
+            case "city": {
+                return 
+            }
+            default: {
+                console.log("hi", node)
+            }
+        }
+    }
+
+
+
     render() {
         if (!this.props.territory_props) {
             return <span>Loading...</span>;
@@ -20,11 +58,11 @@ class Territory extends React.Component {
         return (
             <div className={classname} >
                 <div className="number-token">
-                    {Object.keys(this.props.nodes).map(nodeIndex => (
-                        <div style={{ ...this.props.nodeHash[nodeIndex], cursor: "pointer" }} onClick={() => console.log(this.props.nodes[nodeIndex])}>
-                            <p>o</p>
-                        </div>
-                    ))}
+                    <Nodes
+                        nodes={this.props.nodes}
+                        nodeHash={this.props.nodeHash}
+                        nodeAction={this.nodeAction}
+                    />
                     <p className="number">{this.props.territory_props.roll}</p>
                     <p className="probability-ticks">{".".repeat(this.props.territory_props.prob)}</p>
 
@@ -34,7 +72,7 @@ class Territory extends React.Component {
     }
 }
 
-class Board extends React.Component {
+class Board extends React.PureComponent {
     constructor(props) {
         super(props);
         this.usedNodes = new Map()
@@ -71,8 +109,11 @@ class Board extends React.Component {
                     position: "absolute", bottom: "-11px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
                     left: "-5px"
                 }
-            }
+            },
+            renderAgain: false,
+            buildType: "settlement"
         }
+        this.setBuildType = this.setBuildType.bind(this)
     }
 
     renderTerritory(i) {
@@ -86,16 +127,21 @@ class Board extends React.Component {
         }
         return (
             <Territory
+                buildType={this.state.buildType}
                 territory_props={tile}
                 nodes={returnNodes}
                 nodeHash={this.state.nodeHash}
+                moves={this.props.moves}
             />
         )
     }
 
+    setBuildType(value) {
+        this.setState({ ...this.state, buildType: this.state.buildType === value ? null : value })
+    }
     render() {
         return (
-            <div className="table" style={{ display: "flex" }}>
+            <div className="table">
                 <div className="board">
                     <div className="board-row">
                         <div className="spacer"></div>
@@ -157,7 +203,8 @@ class Board extends React.Component {
                         <div className="spacer"></div>
                     </div>
                 </div>
-                <Dice />
+                <ActiveTurn setBuildType={this.setBuildType} />
+                {this.state.buildType ? <p>{`Where would you like to build your ${this.state.buildType}`}</p> : null}
             </div>
         )
     }

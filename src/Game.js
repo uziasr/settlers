@@ -25,6 +25,7 @@ export const Catan = {
         highestRoll: 0,
         playerIndex: 0
       },
+      initialPlacementsCount: 0,
       tiles: tiles,
       nodes: nodes,
     };
@@ -102,10 +103,42 @@ export const Catan = {
       next: "initialPlacings",
     },
     initialPlacings: {
+      // in this phase, every user will be allowed to place two settlements and two roads
+      // the order will go as it is written and then reversed
       moves: {
         placeSettlement: (G, ctx, node) => {
-          console.log("!!!")
-        }
+          node.placement = G.playOrder[ctx.currentPlayer].color
+          node.canBuild = false
+          let adjacentNodes = board.graph.adjList.get(node)
+          adjacentNodes.forEach(adjacentNode => adjacentNode.canBuild = false)
+          if (G.initialPlacementsCount === G.players.length - 1) {
+            ctx.events.endTurn()
+            return {
+              ...G, playOrder: {
+                0: G.players[3],
+                1: G.players[2],
+                2: G.players[1],
+                3: G.players[0],
+              }, initialPlacementsCount: G.initialPlacementsCount + 1
+            }
+          } else if (G.initialPlacementsCount === G.players.length * 2 - 1) {
+            ctx.events.endTurn()
+            return {
+              ...G, playOrder: {
+                0: G.players[0],
+                1: G.players[1],
+                2: G.players[2],
+                3: G.players[3],
+              }, initialPlacementsCount: G.initialPlacementsCount + 1
+            }
+          }
+          ctx.events.endTurn()
+          return { ...G, initialPlacementsCount: G.initialPlacementsCount + 1 }
+
+        },
+        placeRoad: (G, ctx, node) => {
+        },
+        endIf: (G) => G.initialPlacementsCount === G.players.length * 2
       }
     },
   }

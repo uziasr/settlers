@@ -117,7 +117,7 @@ class Board extends React.Component {
 
             }
             case "settlement": {
-                this.props.moves.buildSettlement(node)
+                this.props.moves.placeSettlement(node)
                 console.log("you can't build here")
                 this.setState({ ...this.state, buildType: null })
                 return
@@ -138,6 +138,7 @@ class Board extends React.Component {
     setBuildType(value) {
         this.setState({ ...this.state, buildType: this.state.buildType === value ? null : value })
     }
+
     resetMap() {
         usedNodes = new Map()
     }

@@ -15,7 +15,7 @@ const Nodes = ({ nodes, nodeHash, nodeAction }) => {
     return (
         <>
             {validNodes.map((nodeIndex, index) => (
-                <div key={index} style={{ ...nodeHash[nodeIndex], color: colorHash[nodes[nodeIndex].placement] ? colorHash[nodes[nodeIndex].placement] : "black", cursor: "pointer" }} onClick={() => nodeAction(nodes[nodeIndex])}>
+                <div key={index} style={{ ...nodeHash[nodeIndex], color: nodes[nodeIndex].placement ?nodes[nodeIndex].placement : "black", cursor: "pointer" }} onClick={() => nodeAction(nodes[nodeIndex])}>
                     {nodes[nodeIndex].placement ? <FontAwesomeIcon icon={faHome} /> : <p>o</p>}
                 </div>
             ))}

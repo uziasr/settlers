@@ -59,6 +59,7 @@ class Tile {
         this.prob = prob
         this.terrainType = terrainType
         this.roll = roll
+        this.roads = {}
         this.blocked = false
     }
     toString() {
@@ -255,11 +256,11 @@ class Board {
         // let innerLayer = this.numberChits.slice(1, 7)
         // let outerLayer = this.numberChits.slice(7, this.terrains.length)
         let shift = (Math.floor(Math.random() * 6) + 1)
-        console.log(this.numberChits.slice(0, 7), this.numberChits.slice(7), shift)
+        // console.log(this.numberChits.slice(0, 7), this.numberChits.slice(7), shift)
         let newInner = [...this.numberChits.slice(shift, 7), ...this.numberChits.slice(1, shift)]
         let newOuter = [...this.numberChits.slice(shift + 7, this.numberChits.length), ...this.numberChits.slice(7, shift + 7)]
         // this.numberChits = [this.numberChits[0], ...newInner, ...newOuter]
-        console.log(newInner, newOuter)
+        // console.log(newInner, newOuter)
 
     }
 
@@ -313,7 +314,6 @@ class Player {
 
 let board = new Board()
 board.createBoard()
-console.log(Player)
 
 export { board, Player }
 

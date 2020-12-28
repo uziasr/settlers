@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Dice from "./Dice"
 
-const ActiveTurn = ({ setBuildType }) => {
+
+const ActiveTurn = ({ setBuildType, endTurn, roll }) => {
 
     return (
         <div className="userControls">
-            <Dice />
+            <Dice roll={roll} />
             <div className="actionButtons">
                 <div className="build" onClick={() => setBuildType("road")}>
                     <p>Build Road</p>
@@ -22,8 +23,8 @@ const ActiveTurn = ({ setBuildType }) => {
                 <div className="build">
                     <p>Trade</p>
                 </div>
-                <div className="build endTurnButton">
-                    <p>End Turn</p>
+                <div className="build endTurnButton" onClick={() => endTurn()}>
+                    <p>End Turn </p>
                 </div>
             </div>
         </div>

@@ -7,7 +7,7 @@ import GameBoard from "./components/GameBoard"
 // console.log(h3ToGeo)
 
 // const App = Client({ game: Catan, board: TicTacToeBoard });
-const App = Client({ game: Catan, board: GameBoard });
+const App = Client({ game: Catan, board: GameBoard, numPlayers: 4, });
 
 
 export default App;

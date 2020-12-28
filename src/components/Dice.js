@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 
-const Dice = () => {
+const Dice = ({ roll }) => {
     const [diceRoll, setDiceRoll] = useState({
         first: 1,
         second: 1,
     })
 
     const rollDice = () => {
-        setDiceRoll({
+        let diceRoll = {
             first: (Math.floor(Math.random() * 6) + 1),
             second: (Math.floor(Math.random() * 6) + 1)
-        })
+        }
+        setDiceRoll(diceRoll)
+        roll(diceRoll.first + diceRoll.second)
     }
 
     return (

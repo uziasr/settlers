@@ -1,33 +1,30 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { board, Player } from "./components/gameLogic"
 
+const moves = {}
+
 export const Catan = {
   name: "settlers",
-
   setup: (ctx, setupData) => {
-    // generate 20 tiles for each tile type
     const tiles = board.tiles
     const scoreboard = {};
     const players = [new Player("bill", "white"), new Player("Alex", "red"), new Player("Fern", "blue"), new Player("Daren", "orange")]
-    ctx.players = players
-    ctx.playOrder = {
-      0: players[0],
-      1: players[1],
-      2: players[2],
-      3: players[3],
-    }
-    ctx.numPlayers = 4
-    console.log(ctx)
-    const nodes = board.graph.adjList
+    const nodes = [...board.graph.adjList.keys()]
+    // const nodes = board.graph.adjList
     const initialState = {
-      // tilesInPool: updatedTilesInPool,
-      // usedTiles: updatedUsedTiles,
-      // tileGroups,
-      // beginTileOwner: null,
-      // scoreboard,
-      // tileMiddleGroup: [],
-      // players,
-      // shouldEndGame: false,
+      players: players,
+      playOrder: {
+        0: players[0],
+        1: players[1],
+        2: players[2],
+        3: players[3],
+      },
+      establishingOrder: {
+        reRolls: [],
+        iterations: 0,
+        highestRoll: 0,
+        playerIndex: 0
+      },
       tiles: tiles,
       nodes: nodes,
     };
@@ -40,12 +37,15 @@ export const Catan = {
 
     },
     buildSettlement: (G, ctx, node) => {
-        // console.log("this is node", G, ctx, node)
+      // console.log("this is node", G, ctx, node)
+      if (node.canBuild) {
         node.placement = ctx.currentPlayer
         node.canBuild = false
         let adjacentNodes = board.graph.adjList.get(node)
-        adjacentNodes.forEach(adjacentNode=>adjacentNode.canBuild = false)
-        adjacentNodes.forEach(adjacentNode=>console.log(adjacentNode))
+        adjacentNodes.forEach(adjacentNode => adjacentNode.canBuild = false)
+      } else {
+        return INVALID_MOVE
+      }
 
     },
     buildCity: () => {
@@ -63,9 +63,52 @@ export const Catan = {
     tradeResponse: (counterOffer, accept = null, decline = false) => {
 
     },
-
   },
-  minPlayers: 4
+  phases: {
+    establishOrder: {
+      start: true,
+      moves: {
+        roll: (G, ctx, roll) => {
+          let establishingOrder = { ...G.establishingOrder }
+          console.log(establishingOrder)
+          if (roll > establishingOrder.highestRoll) {
+            establishingOrder.highestRoll = roll
+            establishingOrder.playerIndex = ctx.currentPlayer
+          }
+          if (ctx.currentPlayer == "3") {
+            establishingOrder.iterations = 1
+            let players = [...G.players]
+            let newOrder = [...players.slice(Number(G.establishingOrder.playerIndex), 4), ...players.slice(0, Number(G.establishingOrder.playerIndex))]
+            let playOrder = {
+              0: newOrder[0],
+              1: newOrder[1],
+              2: newOrder[2],
+              3: newOrder[3]
+            }
+            ctx.events.endTurn()
+            return { ...G, playOrder: playOrder, establishingOrder: establishingOrder }
+          }
+          ctx.events.endTurn()
+          return { ...G, establishingOrder }
+        },
+        turn: {
+          moveLimit: 1
+        }
+      },
+      endIf: (G, ctx) => {
+        let complete = G.establishingOrder.iterations === 1 && G.establishingOrder.reRolls.length === 0
+        return complete
+      },
+      next: "initialPlacings",
+    },
+    initialPlacings: {
+      moves: {
+        placeSettlement: (G, ctx, node) => {
+          console.log("!!!")
+        }
+      }
+    },
+  }
 }
 //   setup: () => ({ cells: Array(9).fill(null) }),
 

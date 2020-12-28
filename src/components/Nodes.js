@@ -1,15 +1,24 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee, faBuilding, faHome } from '@fortawesome/free-solid-svg-icons'
 
 const Nodes = ({ nodes, nodeHash, nodeAction }) => {
+    let validNodes = [...Object.keys(nodes)]
+    const colorHash = {
+        "0": "white",
+        "1": "red",
+        "2": "blue",
+        "3": "orange"
+    }
+
+
     return (
         <>
-            {Object.keys(nodes).map((nodeIndex, index) => {
-                // console.log(nodeIndex)
-                return <div key={index} style={{ ...nodeHash[nodeIndex], cursor: "pointer" }} onClick={() => nodeAction(nodes[nodeIndex])}>
-                    <p>o</p>
+            {validNodes.map((nodeIndex, index) => (
+                <div key={index} style={{ ...nodeHash[nodeIndex], color: colorHash[nodes[nodeIndex].placement] ? colorHash[nodes[nodeIndex].placement] : "black", cursor: "pointer" }} onClick={() => nodeAction(nodes[nodeIndex])}>
+                    {nodes[nodeIndex].placement ? <FontAwesomeIcon icon={faHome} /> : <p>o</p>}
                 </div>
-            }
-            )}
+            ))}
         </>
     );
 };

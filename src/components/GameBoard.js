@@ -7,83 +7,12 @@ import Nodes from "./Nodes"
 
 // board.createBoard()
 
-class Territory extends React.PureComponent {
+let usedNodes = new Map()
+
+class Territory extends React.Component {
     constructor(props) {
         super(props)
-    }
-    nodeRender() {
-        return (
-            <>
-                {Object.keys(this.props.nodes).map((nodeIndex, index) => {
-                    console.log(nodeIndex)
-                    return <div key={index} style={{ ...this.props.nodeHash[nodeIndex], cursor: "pointer" }} onClick={() => console.log(this.props.nodes[nodeIndex])}>
-                        <p>o</p>
-                    </div>
-                }
-                )}
-            </>
-        )
-    }
-
-    nodeAction = (node) => {
-        switch (this.props.buildType) {
-            case "road": {
-                return
-                
-            }
-            case "settlement": {
-                this.props.moves.buildSettlement(node)
-                console.log(node)
-                return 
-            }
-            case "city": {
-                return 
-            }
-            default: {
-                console.log("hi", node)
-            }
-        }
-    }
-
-
-
-    render() {
-        if (!this.props.territory_props) {
-            return <span>Loading...</span>;
-        }
-        let classname = "territory territory-type-"
-            + this.props.territory_props.terrainType + " prob-"
-            + this.props.territory_props.prob;
-
-        return (
-            <div className={classname} >
-                <div className="number-token">
-                    <Nodes
-                        nodes={this.props.nodes}
-                        nodeHash={this.props.nodeHash}
-                        nodeAction={this.nodeAction}
-                    />
-                    <p className="number">{this.props.territory_props.roll}</p>
-                    <p className="probability-ticks">{".".repeat(this.props.territory_props.prob)}</p>
-
-                </div>
-            </div>
-        )
-    }
-}
-
-class Board extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.usedNodes = new Map()
         this.state = {
-            board_pieces: [
-                board.tiles[9], board.tiles[10], board.tiles[11],
-                board.tiles[8], board.tiles[2], board.tiles[3], board.tiles[12],
-                board.tiles[7], board.tiles[1], board.tiles[0], board.tiles[4], board.tiles[13],
-                board.tiles[18], board.tiles[6], board.tiles[5], board.tiles[14],
-                board.tiles[17], board.tiles[16], board.tiles[15]
-            ],
             nodeHash: {
                 "1": {
                     position: "absolute", bottom: "49px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
@@ -110,19 +39,63 @@ class Board extends React.PureComponent {
                     left: "-5px"
                 }
             },
+        }
+    }
+
+    render() {
+        if (!this.props.territory_props) {
+            return <span>Loading...</span>;
+        }
+        let classname = "territory territory-type-"
+            + this.props.territory_props.terrainType + " prob-"
+            + this.props.territory_props.prob;
+
+        return (
+            <div className={classname} >
+                <div className="number-token">
+
+                    <Nodes
+                        nodes={this.props.nodes}
+                        nodeHash={this.state.nodeHash}
+                        nodeAction={this.props.nodeAction}
+                    />
+                    <p className="number">{this.props.territory_props.roll}</p>
+                    <p className="probability-ticks">{".".repeat(this.props.territory_props.prob)}</p>
+
+                </div>
+            </div>
+        )
+    }
+}
+
+class Board extends React.Component {
+    constructor(props) {
+        super(props);
+        // this.usedNodes = new Map()
+        this.state = {
+            board_pieces: [
+                board.tiles[9], board.tiles[10], board.tiles[11],
+                board.tiles[8], board.tiles[2], board.tiles[3], board.tiles[12],
+                board.tiles[7], board.tiles[1], board.tiles[0], board.tiles[4], board.tiles[13],
+                board.tiles[18], board.tiles[6], board.tiles[5], board.tiles[14],
+                board.tiles[17], board.tiles[16], board.tiles[15]
+            ],
+
             renderAgain: false,
-            buildType: "settlement"
+            buildType: null,
+            currentPlayer: this.props.G.playOrder[this.props.ctx.currentPlayer]
         }
         this.setBuildType = this.setBuildType.bind(this)
+
     }
 
     renderTerritory(i) {
         let tile = this.state.board_pieces[i]
         let returnNodes = {}
         for (let nodeIndex in tile.edges) {
-            if (this.usedNodes.get(tile.edges[nodeIndex]) === undefined) {
+            if (usedNodes.get(tile.edges[nodeIndex]) === undefined) {
                 returnNodes[nodeIndex] = tile.edges[nodeIndex]
-                this.usedNodes.set(tile.edges[nodeIndex], true)
+                usedNodes.set(tile.edges[nodeIndex], true)
             }
         }
         return (
@@ -132,13 +105,43 @@ class Board extends React.PureComponent {
                 nodes={returnNodes}
                 nodeHash={this.state.nodeHash}
                 moves={this.props.moves}
+                nodeAction={this.nodeAction}
             />
         )
+    }
+
+    nodeAction = (node) => {
+        switch (this.state.buildType) {
+            case "road": {
+                return
+
+            }
+            case "settlement": {
+                this.props.moves.buildSettlement(node)
+                console.log("you can't build here")
+                this.setState({ ...this.state, buildType: null })
+                return
+            }
+            case "city": {
+                return
+            }
+            default: {
+                console.log("hi", node)
+            }
+        }
+    }
+
+    nextTurn = () => {
+        this.props.events.endTurn()
     }
 
     setBuildType(value) {
         this.setState({ ...this.state, buildType: this.state.buildType === value ? null : value })
     }
+    resetMap() {
+        usedNodes = new Map()
+    }
+
     render() {
         return (
             <div className="table">
@@ -203,8 +206,10 @@ class Board extends React.PureComponent {
                         <div className="spacer"></div>
                     </div>
                 </div>
-                <ActiveTurn setBuildType={this.setBuildType} />
+                <p>{"hello"} {this.props.G.playOrder[this.props.ctx.currentPlayer].name}</p>
+                <ActiveTurn setBuildType={this.setBuildType} endTurn={this.nextTurn} roll={this.props.moves.roll} />
                 {this.state.buildType ? <p>{`Where would you like to build your ${this.state.buildType}`}</p> : null}
+                {this.resetMap()}
             </div>
         )
     }

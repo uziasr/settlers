@@ -86,7 +86,6 @@ class Board extends React.Component {
             currentPlayer: this.props.G.playOrder[this.props.ctx.currentPlayer]
         }
         this.setBuildType = this.setBuildType.bind(this)
-
     }
 
     renderTerritory(i) {
@@ -113,12 +112,11 @@ class Board extends React.Component {
     nodeAction = (node) => {
         switch (this.state.buildType) {
             case "road": {
+                this.props.moves.placeRoad(node)
                 return
-
             }
             case "settlement": {
                 this.props.moves.placeSettlement(node)
-                console.log("you can't build here")
                 this.setState({ ...this.state, buildType: null })
                 return
             }
@@ -208,7 +206,11 @@ class Board extends React.Component {
                     </div>
                 </div>
                 <p>{"hello"} {this.props.G.playOrder[this.props.ctx.currentPlayer].name}</p>
-                <ActiveTurn setBuildType={this.setBuildType} endTurn={this.nextTurn} roll={this.props.moves.roll} />
+                <ActiveTurn
+                    setBuildType={this.setBuildType}
+                    endTurn={this.nextTurn}
+                    roll={this.props.ctx.phase == "mainGame" ? this.props.moves.mainRoll : this.props.moves.roll}
+                />
                 {this.state.buildType ? <p>{`Where would you like to build your ${this.state.buildType}`}</p> : null}
                 {this.resetMap()}
             </div>

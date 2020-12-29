@@ -2,10 +2,9 @@ class Node {
     constructor(tile) {
         this.placement = null;
         this.tiles = [tile]
-        this.yields = {
-
-        }
+        this.yields = []
         this.canBuild = true
+        this.roadsTo = {}
     }
     // toString() {
     //     return `[${this.tiles}]`
@@ -107,7 +106,8 @@ class Board {
             "Fields": "hay",
             "Pasture": "sheep",
             "Forest": "wood",
-            "Mountain": "mineral"
+            "Mountain": "mineral",
+            "Desert": null
         }
         this.probabilityHash = {
             5: 4,
@@ -130,6 +130,7 @@ class Board {
             11: 2,
             [null]: null
         }
+        this.placements = {}
     }
 
     numHashGet(num) {
@@ -217,6 +218,13 @@ class Board {
         lastTile.edges[3].tiles.push(lastTile)
         lastTile.edges[4].tiles.push(lastTile)
         lastTile.edges[5].tiles.push(lastTile)
+
+        lastTile.edges[1].yields.push(this.terrainYields[lastTile.terrainType])
+        lastTile.edges[2].yields.push(this.terrainYields[lastTile.terrainType])
+        lastTile.edges[3].yields.push(this.terrainYields[lastTile.terrainType])
+        lastTile.edges[4].yields.push(this.terrainYields[lastTile.terrainType])
+        lastTile.edges[5].yields.push(this.terrainYields[lastTile.terrainType])
+
         this.tiles.push(lastTile)
         this.connectTileNodes(lastTile)
     }
@@ -226,6 +234,7 @@ class Board {
         tileKeysArr.reduce((prev, curr) => {
             if (currentTile.edges[curr] === null) {
                 currentTile.edges[curr] = new Node(currentTile)
+                currentTile.edges[curr].yields.push(this.terrainYields[currentTile.terrainType])
                 this.graph.addVertex(currentTile.edges[curr])
             }
             if (prev) {
@@ -242,9 +251,12 @@ class Board {
         if (referenceFirstNode.tiles.length === 2) {
             currentTile.edges[this.numHashGet(currentTilePointer + increment)] = adjacentNodes[2]
             currentTile.edges[this.numHashGet(currentTilePointer + increment)].tiles.push(currentTile)
+            currentTile.edges[this.numHashGet(currentTilePointer + increment)].yields.push(this.terrainYields[currentTile.terrainType])
         }
         currentTile.edges[this.numHashGet(currentTilePointer)] = referenceTile.edges[this.numHashGet(referencePointer)]
         currentTile.edges[this.numHashGet(currentTilePointer)].tiles.push(currentTile)
+        currentTile.edges[this.numHashGet(currentTilePointer)].yields.push(this.terrainYields[currentTile.terrainType])
+
     }
 
     shuffle(a = this.terrains) {
@@ -262,6 +274,12 @@ class Board {
         // this.numberChits = [this.numberChits[0], ...newInner, ...newOuter]
         // console.log(newInner, newOuter)
 
+    }
+
+    connectRoad(targetNode, fromNode, road) {
+        console.log(road)
+        targetNode.roadsTo[road] = fromNode
+        fromNode.roadsTo[road] = targetNode
     }
 
     createBoard() {
@@ -314,7 +332,7 @@ class Player {
 
 let board = new Board()
 board.createBoard()
-
+console.log(board.graph.adjList)
 export { board, Player }
 
 

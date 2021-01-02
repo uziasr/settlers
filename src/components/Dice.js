@@ -7,6 +7,7 @@ const Dice = ({ roll }) => {
     })
 
     const rollDice = () => {
+        console.log(roll)
         let diceRoll = {
             first: (Math.floor(Math.random() * 6) + 1),
             second: (Math.floor(Math.random() * 6) + 1)

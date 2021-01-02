@@ -9,65 +9,6 @@ import Nodes from "./Nodes"
 
 let usedNodes = new Map()
 
-class Territory extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            nodeHash: {
-                "1": {
-                    position: "absolute", bottom: "49px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "-5px"
-                },
-                "2": {
-                    position: "absolute", bottom: "78px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "45px"
-                },
-                "3": {
-                    position: "absolute", bottom: "49px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "96px"
-                },
-                "4": {
-                    position: "absolute", bottom: "-10px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "96px"
-                },
-                "5": {
-                    position: "absolute", bottom: "-38px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "45px"
-                },
-                "6": {
-                    position: "absolute", bottom: "-11px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "-5px"
-                }
-            },
-        }
-    }
-
-    render() {
-        if (!this.props.territory_props) {
-            return <span>Loading...</span>;
-        }
-        let classname = "territory territory-type-"
-            + this.props.territory_props.terrainType + " prob-"
-            + this.props.territory_props.prob;
-
-        return (
-            <div className={classname} >
-                <div className="number-token">
-
-                    <Nodes
-                        nodes={this.props.nodes}
-                        nodeHash={this.state.nodeHash}
-                        nodeAction={this.props.nodeAction}
-                    />
-                    <p className="number">{this.props.territory_props.roll}</p>
-                    <p className="probability-ticks">{".".repeat(this.props.territory_props.prob)}</p>
-
-                </div>
-            </div>
-        )
-    }
-}
-
 class Board extends React.Component {
     constructor(props) {
         super(props);
@@ -121,6 +62,7 @@ class Board extends React.Component {
                 return
             }
             case "city": {
+                this.props.moves.buildCity(node)
                 return
             }
             default: {
@@ -208,11 +150,70 @@ class Board extends React.Component {
                 <p>{"hello"} {this.props.G.playOrder[this.props.ctx.currentPlayer].name}</p>
                 <ActiveTurn
                     setBuildType={this.setBuildType}
-                    endTurn={this.nextTurn}
-                    roll={this.props.ctx.phase == "mainGame" ? this.props.moves.mainRoll : this.props.moves.roll}
+                    endTurn={this.props.moves.completeTurn}
+                    roll={this.props.moves.roll}
                 />
                 {this.state.buildType ? <p>{`Where would you like to build your ${this.state.buildType}`}</p> : null}
                 {this.resetMap()}
+            </div>
+        )
+    }
+}
+
+class Territory extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            nodeHash: {
+                "1": {
+                    position: "absolute", bottom: "49px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
+                    left: "-5px"
+                },
+                "2": {
+                    position: "absolute", bottom: "78px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
+                    left: "45px"
+                },
+                "3": {
+                    position: "absolute", bottom: "49px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
+                    left: "96px"
+                },
+                "4": {
+                    position: "absolute", bottom: "-10px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
+                    left: "96px"
+                },
+                "5": {
+                    position: "absolute", bottom: "-38px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
+                    left: "45px"
+                },
+                "6": {
+                    position: "absolute", bottom: "-11px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
+                    left: "-5px"
+                }
+            },
+        }
+    }
+
+    render() {
+        if (!this.props.territory_props) {
+            return <span>Loading...</span>;
+        }
+        let classname = "territory territory-type-"
+            + this.props.territory_props.terrainType + " prob-"
+            + this.props.territory_props.prob;
+
+        return (
+            <div className={classname} >
+                <div className="number-token">
+
+                    <Nodes
+                        nodes={this.props.nodes}
+                        nodeHash={this.state.nodeHash}
+                        nodeAction={this.props.nodeAction}
+                    />
+                    <p className="number">{this.props.territory_props.roll}</p>
+                    <p className="probability-ticks">{".".repeat(this.props.territory_props.prob)}</p>
+
+                </div>
             </div>
         )
     }

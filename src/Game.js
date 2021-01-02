@@ -1,5 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { board, Player } from "./components/gameLogic"
+import { current } from 'immer';
 
 const moves = {
   initialRoll: (G, ctx, roll) => {
@@ -99,6 +100,45 @@ const moves = {
         }
       })
     }
+    ctx.events.setActivePlayers({ currentPlayer: "strategize" })
+  },
+  buildSettlement: (G, ctx, node) => {
+    const currentPlayer = G.playOrder[ctx.currentPlayer]
+    if (["wood", "brick", "hay", "sheep"].every(resource => currentPlayer.cards[resource] >= 1) && currentPlayer.settlements.length) {
+      currentPlayer.cards["wood"]--
+      currentPlayer.cards["brick"]--
+      currentPlayer.cards["hay"]--
+      currentPlayer.cards["sheep"]--
+      node.placement = currentPlayer.settlements.pop()
+      currentPlayer.points++
+    } else {
+      return INVALID_MOVE
+    }
+  },
+  buildCity: (G, ctx, node) => {
+    const currentPlayer = G.playOrder[ctx.currentPlayer]
+    const adequateCards = currentPlayer.cards["hay"] >= 3 && currentPlayer.cards["mineral"] >= 2
+    const adequateCities = currentPlayer.cities.length
+    const settlementOwnership = node.placement && node.placement.color == currentPlayer.color
+    if (adequateCards && adequateCities & settlementOwnership) {
+      currentPlayer["hay"] -= 3
+      currentPlayer["mineral"] -= 2
+      currentPlayer.settlements.push(node.placement)
+      node.placement = currentPlayer.cities.pop()
+      currentPlayer.points++
+    } else {
+      return INVALID_MOVE
+    }
+  },
+  getDevelopmentCard: (G, ctx) => {
+
+  },
+  buildRoad: (G, ctx, node) => {
+
+  },
+  completeTurn: (G, ctx, node) => {
+    ctx.events.endTurn()
+    ctx.events.setActivePlayers({ currentPlayer: "startTurn" })
   }
 }
 
@@ -142,40 +182,6 @@ export const Catan = {
     };
     return initialState;
   },
-  moves: {
-    buildRoad: {
-      move: (G, ctx, ...args) => { },
-      undoable: true,
-
-    },
-    buildSettlement: (G, ctx, node) => {
-      // console.log("this is node", G, ctx, node)
-      if (node.canBuild) {
-        node.placement = ctx.currentPlayer
-        node.canBuild = false
-        let adjacentNodes = board.graph.adjList.get(node)
-        adjacentNodes.forEach(adjacentNode => adjacentNode.canBuild = false)
-      } else {
-        return INVALID_MOVE
-      }
-
-    },
-    buildCity: () => {
-
-    },
-    getDevelopmentCard: () => {
-
-    },
-    roll: () => {
-
-    },
-    initiateTrade: (drop = false) => {
-
-    },
-    tradeResponse: (counterOffer, accept = null, decline = false) => {
-
-    },
-  },
   turn: {
     stages: {
       initialSettlement: {
@@ -187,6 +193,21 @@ export const Catan = {
       initialRoad: {
         moves: {
           placeRoad: moves.placeRoad
+        }
+      },
+      startTurn: {
+        moves: {
+          roll: moves.roll,
+          swiftKnight: moves.knight,
+        },
+        next: "strategize"
+      },
+      strategize: {
+        moves: {
+          placeSettlement: moves.buildSettlement,
+          buildCity: moves.buildCity,
+          getDevelopmentCard: moves.getDevelopmentCard,
+          completeTurn: moves.completeTurn
         }
       }
 
@@ -212,23 +233,18 @@ export const Catan = {
       next: "initialPlacings",
     },
     initialPlacings: {
-      // in this phase, every user will be allowed to place two settlements and two roads
-      // the order will go as it is written and then reversed
-      // moves: {
-      //   placeSettlement: moves.initialPlacements,
-      //   placeRoad: (G, ctx, node) => {
-      //   },
-      // },
       endIf: (G) => {
         return G.initialPlacementsCount === G.players.length * 2
+      },
+      onEnd: (G, ctx) => {
+        ctx.events.setActivePlayers({ currentPlayer: "startTurn" })
       },
       next: "mainGame"
     },
     mainGame: {
-      moves: {
-        mainRoll: moves.roll
-      },
-      endIf: (G) => { }
+      endIf: (G, ctx) => {
+        return G.playOrder[0].score > 10 && G.playOrder[1] && G.playOrder[2].score > 10 && G.playOrder[3]
+      }
     }
 
   }

@@ -312,8 +312,8 @@ class Player {
         this.name = name
         this.color = color
         this.roads = Array.from({ length: 15 }, (_) => new BuildItem("road", color))
-        this.settlements = Array.from({ length: 15 }, (_) => new BuildItem("settlement", color))
-        this.cities = Array.from({ length: 15 }, (_) => new BuildItem("city", color))
+        this.settlements = Array.from({ length: 5 }, (_) => new BuildItem("settlement", color))
+        this.cities = Array.from({ length: 4 }, (_) => new BuildItem("city", color))
         this.cards = {
             "wood": 0,
             "brick": 0,

@@ -152,6 +152,7 @@ class Board extends React.Component {
                     setBuildType={this.setBuildType}
                     endTurn={this.props.moves.completeTurn}
                     roll={this.props.moves.roll}
+                    player={this.props.G.playOrder[this.props.ctx.currentPlayer]}
                 />
                 {this.state.buildType ? <p>{`Where would you like to build your ${this.state.buildType}`}</p> : null}
                 {this.resetMap()}

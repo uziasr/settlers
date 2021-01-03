@@ -1,5 +1,5 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
-import { board, Player } from "./components/gameLogic"
+import { board, Player, developmentCards } from "./components/gameLogic"
 import { current } from 'immer';
 
 const moves = {
@@ -84,7 +84,7 @@ const moves = {
     return { ...G, initialPlacementsCount: G.initialPlacementsCount + 1 }
   },
   roll: (G, ctx, num) => {
-    console.log(G.players)
+    const currentPlayer = G.playOrder[ctx.currentPlayer]
     if (num === 7) {
 
     } else {
@@ -99,6 +99,7 @@ const moves = {
           })
         }
       })
+      currentPlayer.developmentCards.forEach(card => card.useable = card.type === "Victory Point" ? false : true)
     }
     ctx.events.setActivePlayers({ currentPlayer: "strategize" })
   },
@@ -131,6 +132,20 @@ const moves = {
     }
   },
   getDevelopmentCard: (G, ctx) => {
+    const currentPlayer = G.playOrder[ctx.currentPlayer]
+    if (currentPlayer.cards["mineral"] >= 1 && currentPlayer.cards["sheep"] >= 1 && currentPlayer.cards["hay"] >= 1) {
+      currentPlayer.cards["mineral"]--
+      currentPlayer.cards["sheep"]--
+      currentPlayer.cards["hay"]--
+      currentPlayer.developmentCards.push(G.developmentCards.shift())
+    } else {
+      return INVALID_MOVE
+    }
+
+  },
+  useDevelopmentCard: (G, ctx) => {
+    const currentPlayer = G.playOrder[ctx.currentPlayer]
+    currentPlayer.developmentCards.forEach(card => card.useable = card.type === "Victory Point" ? false : true)
 
   },
   buildRoad: (G, ctx, node) => {
@@ -170,6 +185,7 @@ export const Catan = {
         "blue": players[2],
         "orange": players[3]
       },
+      developmentDeck: developmentCards.deck,
       establishingOrder: {
         reRolls: [],
         iterations: 0,

@@ -323,17 +323,64 @@ class Player {
         }
         this.handQuantity = Object.keys(this.cards).reduce((acc, curr) => acc + this.cards[curr], 0)
         this.points = 0
-        this.turn = false
+        this.developmentCards = []
     }
     toString() {
         return `Player(name=${this.name}, color=${this.color})`
     }
 }
 
+class DevelopmentCard {
+    constructor(type, useable = true) {
+        this.type = type
+        this.useable = useable
+    }
+    use() {
+
+    }
+    effect() {
+        switch (this.type) {
+            case "Knight": {
+
+            }
+            case "Road Builder": {
+
+            }
+            case "Year of Plenty": {
+
+            }
+            case "Monopoly": {
+
+            }
+        }
+    }
+}
+
+class DevelopmentDeck {
+    constructor() {
+        this.deck = this.createDeck()
+    }
+    createDeck() {
+        const knights = "Knight,".repeat(14).trim().split(",").slice(0, 14).map(card => new DevelopmentCard(card, false))
+        const victory = "Victory Point,".repeat(5).trim().split(",").slice(0, 5).map(card => new DevelopmentCard(card, false))
+        const roadBuilder = "Road Builder,".repeat(2).trim().split(",").slice(0, 2).map(card => new DevelopmentCard(card, false))
+        const yearOfPlenty = "Year of Plenty,".repeat(2).trim().split(",").slice(0, 2).map(card => new DevelopmentCard(card, false))
+        const monopoly = "Monopoly,".repeat(2).trim().split(",").slice(0, 2).map(card => new DevelopmentCard(card, false))
+        let deck = [...knights, ...victory, ...roadBuilder, ...yearOfPlenty, ...monopoly]
+        for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [deck[i], deck[j]] = [deck[j], deck[i]];
+        }
+        return deck
+    }
+}
+
 let board = new Board()
 board.createBoard()
+let developmentCards = new DevelopmentDeck()
+developmentCards.createDeck()
 console.log(board.graph.adjList)
-export { board, Player }
+export { board, Player, developmentCards }
 
 
 

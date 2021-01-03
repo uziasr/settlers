@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DCDialog from "./DevelopmentCardDialog"
+import Tooltip from '@material-ui/core/Tooltip';
 import Dice from "./Dice"
 
 let developmentCards = [
@@ -10,14 +11,12 @@ let developmentCards = [
     { type: "Monopoly", useable: true, img: "image/monopoly.jpg" }
 ]
 
-
-
-const ActiveTurn = ({ setBuildType, endTurn, roll, player }) => {
+const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType }) => {
 
     let placeHolderCard = { type: "Knight", useable: false, img: "image/knight.jpg" }
     const [open, setOpen] = useState(false);
     const [focusedDC, setFocusedDC] = useState(placeHolderCard)
-
+    
     const handleClickOpen = (dc) => {
         setFocusedDC(() => dc)
         setOpen(true);
@@ -39,9 +38,9 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player }) => {
                 <div className="developmentCardsRoot">
                     <h3>Development Cards</h3>
                     <div className="developmentCards">
-                        {!developmentCards.length ?
-                            developmentCards.map(dc => (
-                                <div onClick={() => handleClickOpen(dc)} className="developmentCard">
+                        {developmentCards.length ?
+                            developmentCards.map((dc, index) => (
+                                <div key={index} onClick={() => handleClickOpen(dc)} className="developmentCard">
                                     <img className="developmentCardImg" src={dc.img}></img>
                                 </div>
                             ))
@@ -54,25 +53,33 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player }) => {
                 </div>
             </div>
             <div className="actionButtons">
-                <h3>Moves</h3>
+                <h3 style={{ marginBottom: "10px" }}>Moves</h3>
                 <div className="topBuilds">
-                    <div className="build" onClick={() => setBuildType("road")}>
-                        <p>Road</p>
-                    </div>
-                    <div className="build" onClick={() => setBuildType("settlement")}>
-                        <p>Settlement</p>
-                    </div>
+                    <Tooltip title={buildType === "road" ? "Select a node" : "1 wood, 1 brick"}>
+                        <div className="build" onClick={() => setBuildType("road")}>
+                            <p style={{ color: buildType === "road" ? "white" : "black" }}>Road</p>
+                        </div>
+                    </Tooltip>
+                    <Tooltip title={buildType === "settlement" ? "Select a node" : "1 wood, 1 brick, 1 sheep, 1 hay"}>
+                        <div className="build" onClick={() => setBuildType("settlement")}>
+                            <p style={{ color: buildType === "settlement" ? "white" : "black" }}>Settlement</p>
+                        </div>
+                    </Tooltip>
                     <div className="build" style={{ background: "mediumseagreen" }}>
                         <p>Trade</p>
                     </div>
                 </div>
                 <div className="bottomBuilds">
-                    <div className="build" onClick={() => setBuildType("city")}>
-                        <p>City</p>
-                    </div>
-                    <div className="build">
-                        <p>Development Card</p>
-                    </div>
+                    <Tooltip title={buildType === "city" ? "Select a node" : "3 hay, 2 mineral"}>
+                        <div className="build" onClick={() => setBuildType("city")}>
+                            <p style={{ color: buildType === "city" ? "white" : "black" }}>City</p>
+                        </div>
+                    </Tooltip>
+                    <Tooltip title="1 sheep, 1 hay, 1 mineral">
+                        <div className="build">
+                            <p>Development Card</p>
+                        </div>
+                    </Tooltip>
                     <div className="build endTurnButton" style={{ background: "rgb(223, 91, 91)" }} onClick={() => endTurn()}>
                         <p>End Turn </p>
                     </div>

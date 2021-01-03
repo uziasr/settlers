@@ -54,16 +54,18 @@ class Board extends React.Component {
         switch (this.state.buildType) {
             case "road": {
                 this.props.moves.placeRoad(node)
-                return
+                this.setState({ ...this.state, buildType: null })
+                break
             }
             case "settlement": {
                 this.props.moves.placeSettlement(node)
                 this.setState({ ...this.state, buildType: null })
-                return
+                break
             }
             case "city": {
                 this.props.moves.buildCity(node)
-                return
+                this.setState({ ...this.state, buildType: null })
+                break
             }
             default: {
                 console.log("hi", node)
@@ -153,8 +155,8 @@ class Board extends React.Component {
                     endTurn={this.props.moves.completeTurn}
                     roll={this.props.moves.roll}
                     player={this.props.G.playOrder[this.props.ctx.currentPlayer]}
+                    buildType={this.state.buildType}
                 />
-                {this.state.buildType ? <p>{`Where would you like to build your ${this.state.buildType}`}</p> : null}
                 {this.resetMap()}
             </div>
         )

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DCDialog from "./DevelopmentCardDialog"
 import Dice from "./Dice"
 
 let developmentCards = [
@@ -9,11 +10,19 @@ let developmentCards = [
     { type: "Monopoly", useable: true, img: "image/monopoly.jpg" }
 ]
 
-let placeHolderCard = { type: "Knight", useable: false, img: "image/knight.jpg" }
 
 
 const ActiveTurn = ({ setBuildType, endTurn, roll, player }) => {
-    console.log(player)
+
+    let placeHolderCard = { type: "Knight", useable: false, img: "image/knight.jpg" }
+    const [open, setOpen] = useState(false);
+    const [focusedDC, setFocusedDC] = useState(placeHolderCard)
+
+    const handleClickOpen = (dc) => {
+        setFocusedDC(() => dc)
+        setOpen(true);
+    };
+
     return (
         <div className="userControls">
             <div className="cards">
@@ -30,15 +39,15 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player }) => {
                 <div className="developmentCardsRoot">
                     <h3>Development Cards</h3>
                     <div className="developmentCards">
-                        {developmentCards.length ?
+                        {!developmentCards.length ?
                             developmentCards.map(dc => (
-                                <div className="developmentCard">
+                                <div onClick={() => handleClickOpen(dc)} className="developmentCard">
                                     <img className="developmentCardImg" src={dc.img}></img>
                                 </div>
                             ))
                             :
                             <div style={{ visibility: "hidden" }} className="developmentCard">
-                                <img className="developmentCardImg" alt="placeholder" src={placeHolderCard.img}></img>
+                                <img className="developmentCardImg" alt="sneaky but you can't use :)" src={placeHolderCard.img}></img>
                             </div>
                         }
                     </div>
@@ -69,6 +78,7 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player }) => {
                     </div>
                 </div>
             </div>
+            <DCDialog open={open} setOpen={setOpen} dc={focusedDC} />
         </div>
     );
 };

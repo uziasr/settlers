@@ -257,14 +257,20 @@ h3 {
 
 .cards{
     background: rgb(59, 59, 59, .7);
+    padding: 10px;
+    border-radius: 25px;
     color: white;
+    width: 60%;
 }
 .resourceRoot{
 
 }
 .resources {
     display: flex;
-    
+    margin: 0 auto;
+    width: 70%;
+    justify-content: space-evenly;
+    /* justify-content: center; */
 }
 
 .resourceCard {
@@ -276,5 +282,20 @@ h3 {
 
 }
 .developmentCards {
-    display: "flex";
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+.developmentCardImg {
+    height:175px;
+    cursor: pointer;
+    margin-top: 12.5px;
+    margin-bottom: 12.5px;
+}
+.developmentCardImg:hover{
+    background: black;
+    height:200px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    transition: 400ms;
 }

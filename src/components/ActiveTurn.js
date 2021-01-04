@@ -16,7 +16,7 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType }) => {
     let placeHolderCard = { type: "Knight", useable: false, img: "image/knight.jpg" }
     const [open, setOpen] = useState(false);
     const [focusedDC, setFocusedDC] = useState(placeHolderCard)
-    
+
     const handleClickOpen = (dc) => {
         setFocusedDC(() => dc)
         setOpen(true);
@@ -52,38 +52,41 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType }) => {
                     </div>
                 </div>
             </div>
-            <div className="actionButtons">
-                <h3 style={{ marginBottom: "10px" }}>Moves</h3>
-                <div className="topBuilds">
-                    <Tooltip title={buildType === "road" ? "Select a node" : "1 wood, 1 brick"}>
-                        <div className="build" onClick={() => setBuildType("road")}>
-                            <p style={{ color: buildType === "road" ? "white" : "black" }}>Road</p>
+            <div className="actionButtonsDiceWrap">
+                <div className="actionButtons">
+                    <h3 style={{ marginBottom: "10px" }}>Moves</h3>
+                    <div className="topBuilds">
+                        <Tooltip title={buildType === "road" ? "Select a node" : "1 wood, 1 brick"}>
+                            <div className="build" onClick={() => setBuildType("road")}>
+                                <p style={{ color: buildType === "road" ? "white" : "black" }}>Road</p>
+                            </div>
+                        </Tooltip>
+                        <Tooltip title={buildType === "settlement" ? "Select a node" : "1 wood, 1 brick, 1 sheep, 1 hay"}>
+                            <div className="build" onClick={() => setBuildType("settlement")}>
+                                <p style={{ color: buildType === "settlement" ? "white" : "black" }}>Settlement</p>
+                            </div>
+                        </Tooltip>
+                        <div className="build" style={{ background: "mediumseagreen" }}>
+                            <p>Trade</p>
                         </div>
-                    </Tooltip>
-                    <Tooltip title={buildType === "settlement" ? "Select a node" : "1 wood, 1 brick, 1 sheep, 1 hay"}>
-                        <div className="build" onClick={() => setBuildType("settlement")}>
-                            <p style={{ color: buildType === "settlement" ? "white" : "black" }}>Settlement</p>
+                    </div>
+                    <div className="bottomBuilds">
+                        <Tooltip title={buildType === "city" ? "Select a node" : "3 hay, 2 mineral"}>
+                            <div className="build" onClick={() => setBuildType("city")}>
+                                <p style={{ color: buildType === "city" ? "white" : "black" }}>City</p>
+                            </div>
+                        </Tooltip>
+                        <Tooltip title="1 sheep, 1 hay, 1 mineral">
+                            <div className="build">
+                                <p>Development Card</p>
+                            </div>
+                        </Tooltip>
+                        <div className="build endTurnButton" style={{ background: "rgb(223, 91, 91)" }} onClick={() => endTurn()}>
+                            <p>End Turn </p>
                         </div>
-                    </Tooltip>
-                    <div className="build" style={{ background: "mediumseagreen" }}>
-                        <p>Trade</p>
                     </div>
                 </div>
-                <div className="bottomBuilds">
-                    <Tooltip title={buildType === "city" ? "Select a node" : "3 hay, 2 mineral"}>
-                        <div className="build" onClick={() => setBuildType("city")}>
-                            <p style={{ color: buildType === "city" ? "white" : "black" }}>City</p>
-                        </div>
-                    </Tooltip>
-                    <Tooltip title="1 sheep, 1 hay, 1 mineral">
-                        <div className="build">
-                            <p>Development Card</p>
-                        </div>
-                    </Tooltip>
-                    <div className="build endTurnButton" style={{ background: "rgb(223, 91, 91)" }} onClick={() => endTurn()}>
-                        <p>End Turn </p>
-                    </div>
-                </div>
+                <Dice roll={roll} />
             </div>
             <DCDialog open={open} setOpen={setOpen} dc={focusedDC} />
         </div>

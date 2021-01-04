@@ -13,9 +13,10 @@
 }
 
 .rollRoot {
-    width: 15%;
+    width: 30%;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
+    justify-content: space-between;
     align-content: center;
     align-items: center;
 }
@@ -25,7 +26,17 @@
 }
 
 .rollButton {
-    padding: 5px 7px;
+    background: mediumaquamarine;
+    cursor: pointer;
+    width: 100px;
+    padding: 25px;
+    border-radius: 15px;
+    margin: 5px;
+}
+
+.rollButton:hover {
+    color: white;
+    transition: 300ms;
 }
 
 .dice p {
@@ -33,11 +44,15 @@
 }
 
 .die {
-    background: white;
+    background: black;
+    width: 100px;
     padding: 25px;
     border-radius: 15px;
     margin: 5px;
     border: 2px solid black;
+    color: mediumaquamarine;
+    text-align: center;
+
 }
 
 .board {
@@ -200,7 +215,15 @@
 
 .actionButtons {
     /* margin: 0 auto; */
-    width: 30%;
+    width: 100%;
+}
+.actionButtonsDiceWrap{
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
 }
 
 .build {
@@ -255,16 +278,16 @@ h3 {
 }
 
 
-.cards{
+.cards {
     background: rgb(59, 59, 59, .7);
     padding: 5px 10px;
     border-radius: 25px;
     color: white;
     width: 60%;
 }
-.resourceRoot{
 
-}
+.resourceRoot {}
+
 .resources {
     display: flex;
     margin: 0 auto;
@@ -275,27 +298,50 @@ h3 {
 
 .resourceCard {
     font-size: 24px;
-   
-}
-
-.developmentCardsRoot {
 
 }
+
+.developmentCardsRoot {}
+
 .developmentCards {
     display: flex;
     align-content: center;
     align-items: center;
 }
+
 .developmentCardImg {
-    height:150px;
+    height: 150px;
     cursor: pointer;
     margin-top: 5px;
     margin-bottom: 5px;
 }
-.developmentCardImg:hover{
+
+.developmentCardImg:hover {
     background: black;
-    height:160px;
+    height: 160px;
     margin-top: 0px;
     margin-bottom: 0px;
     transition: 200ms;
 }
+
+.boardAndPlayers {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    align-content: center;
+    align-items: center;
+}
+
+table {
+    background: #212529;
+    border: 1px solid black;
+    text-align: center;
+    height: 150px;
+    color: whitesmoke;
+}
+
+td {
+    border: 1px solid #32383e;
+    margin: 0;
+}
+

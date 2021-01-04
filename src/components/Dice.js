@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Typography, Tooltip } from '@material-ui/core';
 
 const Dice = ({ roll }) => {
     const [diceRoll, setDiceRoll] = useState({
@@ -19,14 +20,11 @@ const Dice = ({ roll }) => {
     return (
         <div className="rollRoot">
             <div className="dice">
-                <div className="die">
-                    <p>{diceRoll.first}</p>
-                </div>
-                <div className="die">
-                    <p>{diceRoll.second}</p>
-                </div>
+                <Tooltip title={`${diceRoll.first}, ${diceRoll.second}`}><div className="die"> <Typography>{diceRoll.first + diceRoll.second}</Typography></div></Tooltip>
             </div>
-            <button className="rollButton" onClick={rollDice}>Roll</button>
+            <div className="rollButton" onClick={rollDice}>
+                <Typography variant="button">Roll</Typography>
+            </div>
         </div>
     );
 };

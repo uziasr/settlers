@@ -4,6 +4,7 @@ import './index.css';
 import { board } from "./gameLogic"
 import ActiveTurn from "./ActiveTurn"
 import Nodes from "./Nodes"
+import ScoreBoard from "./ScoreBoard"
 
 // board.createBoard()
 
@@ -88,68 +89,73 @@ class Board extends React.Component {
     render() {
         return (
             <div className="table">
-                <div className="board">
-                    <div className="board-row">
-                        <div className="spacer"></div>
-                        <div className="port port-left" style={{ top: "25px" }}>?</div>
-                        <div className="spacer"></div>
-                        <div className="port port-left">🐑</div>
-                        <div className="spacer"></div>
-                        <div className="spacer"></div>
+                <div className="boardAndPlayers">
+                    <div className="board">
+                        <div className="board-row">
+                            <div className="spacer"></div>
+                            <div className="port port-left" style={{ top: "25px" }}>?</div>
+                            <div className="spacer"></div>
+                            <div className="port port-left">🐑</div>
+                            <div className="spacer"></div>
+                            <div className="spacer"></div>
+                        </div>
+                        <div className="board-row">
+                            <div className="spacer"></div>
+                            <div className="spacer"></div>
+                            {this.renderTerritory(0)}
+                            {this.renderTerritory(1)}
+                            {this.renderTerritory(2)}
+                            <div className="port port-right">⛏</div>
+                            <div className="spacer"></div>
+                        </div>
+                        <div className="board-row">
+                            <div className="port port-left">🌲</div>
+                            {this.renderTerritory(3)}
+                            {this.renderTerritory(4)}
+                            {this.renderTerritory(5)}
+                            {this.renderTerritory(6)}
+                            <div className="spacer"></div>
+                        </div>
+                        <div className="board-row">
+                            <div className="spacer"></div>
+                            {this.renderTerritory(7)}
+                            {this.renderTerritory(8)}
+                            {this.renderTerritory(9)}
+                            {this.renderTerritory(10)}
+                            {this.renderTerritory(11)}
+                            <div className="port port-right">🐑</div>
+                        </div>
+                        <div className="board-row">
+                            <div className="port port-left">🌾</div>
+                            {this.renderTerritory(12)}
+                            {this.renderTerritory(13)}
+                            {this.renderTerritory(14)}
+                            {this.renderTerritory(15)}
+                            <div className="spacer"></div>
+                        </div>
+                        <div className="board-row">
+                            <div className="spacer"></div>
+                            <div className="spacer"></div>
+                            {this.renderTerritory(16)}
+                            {this.renderTerritory(17)}
+                            {this.renderTerritory(18)}
+                            <div className="port port-right">🧱</div>
+                            <div className="spacer"></div>
+                        </div>
+                        <div className="board-row">
+                            <div className="spacer"></div>
+                            <div className="port port-left">?</div>
+                            <div className="spacer"></div>
+                            <div className="port port-left">🐑</div>
+                            <div className="spacer"></div>
+                            <div className="spacer"></div>
+                        </div>
                     </div>
-                    <div className="board-row">
-                        <div className="spacer"></div>
-                        <div className="spacer"></div>
-                        {this.renderTerritory(0)}
-                        {this.renderTerritory(1)}
-                        {this.renderTerritory(2)}
-                        <div className="port port-right">⛏</div>
-                        <div className="spacer"></div>
-                    </div>
-                    <div className="board-row">
-                        <div className="port port-left">🌲</div>
-                        {this.renderTerritory(3)}
-                        {this.renderTerritory(4)}
-                        {this.renderTerritory(5)}
-                        {this.renderTerritory(6)}
-                        <div className="spacer"></div>
-                    </div>
-                    <div className="board-row">
-                        <div className="spacer"></div>
-                        {this.renderTerritory(7)}
-                        {this.renderTerritory(8)}
-                        {this.renderTerritory(9)}
-                        {this.renderTerritory(10)}
-                        {this.renderTerritory(11)}
-                        <div className="port port-right">🐑</div>
-                    </div>
-                    <div className="board-row">
-                        <div className="port port-left">🌾</div>
-                        {this.renderTerritory(12)}
-                        {this.renderTerritory(13)}
-                        {this.renderTerritory(14)}
-                        {this.renderTerritory(15)}
-                        <div className="spacer"></div>
-                    </div>
-                    <div className="board-row">
-                        <div className="spacer"></div>
-                        <div className="spacer"></div>
-                        {this.renderTerritory(16)}
-                        {this.renderTerritory(17)}
-                        {this.renderTerritory(18)}
-                        <div className="port port-right">🧱</div>
-                        <div className="spacer"></div>
-                    </div>
-                    <div className="board-row">
-                        <div className="spacer"></div>
-                        <div className="port port-left">?</div>
-                        <div className="spacer"></div>
-                        <div className="port port-left">🐑</div>
-                        <div className="spacer"></div>
-                        <div className="spacer"></div>
-                    </div>
+                    <ScoreBoard 
+                    players={this.props.G.playOrder}
+                    currentPlayer={this.props.G.playOrder[this.props.ctx.currentPlayer]}
+                    />
                 </div>
-                <p>{"hello"} {this.props.G.playOrder[this.props.ctx.currentPlayer].name}</p>
                 <ActiveTurn
                     setBuildType={this.setBuildType}
                     endTurn={this.props.moves.completeTurn}

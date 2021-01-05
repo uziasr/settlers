@@ -53,29 +53,20 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 
-const YearOfPlenty = () => {
-
-    const [yearOfPlentyInputs, setYearOfPlentyInputs] = useState({
-        "wood": 1,
-        "brick": 0,
-        "hay": 0,
-        "sheep": 0,
-        "mineral": 0
-    })
+const YearOfPlenty = ({ yearOfPlentyInputs, setYearOfPlentyInputs }) => {
 
     const plentyChangeHandler = (e) => {
+        const value = Number(e.target.value)
         const currentTotal = Object.keys(yearOfPlentyInputs).reduce((acc, resource) => {
             return acc + yearOfPlentyInputs[resource]
         }, 0)
-        if (currentTotal == 2) {
+        if (currentTotal >= 2 && value >= 1 && yearOfPlentyInputs[e.target.name] == 0) {
             return
         }
-        if (e.target.value > 0 && e.target.value < 2) {
-            setYearOfPlentyInputs({ ...yearOfPlentyInputs, [e.target.name]: currentTotal ? 2 : Number(e.target.value) })
+        if ((value === 1 || value === 2 || value === 0)) {
+            setYearOfPlentyInputs({ ...yearOfPlentyInputs, [e.target.name]: Number(e.target.value) })
         }
     }
-
-    console.log(yearOfPlentyInputs)
 
     return (
         <div>
@@ -138,9 +129,18 @@ const YearOfPlenty = () => {
     )
 }
 
-export default function DCDialog({ open, setOpen, dc }) {
+export default function DCDialog({ open, setOpen, dc, player, developmentCardAction }) {
 
-    const [additionalStep, setAdditionalStep] = useState()
+    const [additionalStep, setAdditionalStep] = useState(null)
+    const [yearOfPlentyInputs, setYearOfPlentyInputs] = useState({
+        "wood": 0,
+        "brick": 0,
+        "hay": 0,
+        "sheep": 0,
+        "mineral": 0
+    })
+
+    const [monopolyResource, setMonopolyResource] = useState(null)
 
     const Monopoly = () => (
         <div>
@@ -165,9 +165,13 @@ export default function DCDialog({ open, setOpen, dc }) {
         setAdditionalStep(null)
     };
 
+    const cardAction = () => {
+        developmentCardAction(dc, yearOfPlentyInputs, monopolyResource)
+        handleClose()
+    }
 
     const handleMonopolyAndYear = (dc) => {
-        setAdditionalStep(dc.type == "Monopoly" ? "monopoly" : "year of plenty")
+        setAdditionalStep(dc.type == "Monopoly" ? "Monopoly" : "Year of Plenty")
         // handleClose()
     }
 
@@ -184,12 +188,18 @@ export default function DCDialog({ open, setOpen, dc }) {
                     <Typography gutterBottom>{dcDescriptions[dc.type]}</Typography>
                 </DialogContent>
                 <DialogContent style={{ margin: "0 auto" }}>
-                    {additionalStep === null ? <img src={dc.img}></img> : additionalStep === "monopoly" ? <Monopoly /> : <YearOfPlenty />}
+                    {additionalStep === null ? <img src={dc.img}></img> : additionalStep === "Monopoly" ? <Monopoly /> : <YearOfPlenty yearOfPlentyInputs={yearOfPlentyInputs} setYearOfPlentyInputs={setYearOfPlentyInputs} />}
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={["Monopoly", "Year of Plenty"].includes(dc.type) ? handleMonopolyAndYear : handleClose} color="primary">
-                        Use Card
-                    </Button>
+                    {additionalStep === null ?
+                        <Button autoFocus onClick={["Monopoly", "Year of Plenty"].includes(dc.type) ? handleMonopolyAndYear : cardAction} color="primary">
+                            Use Card
+                        </Button>
+                        :
+                        <Button autoFocus onClick={cardAction} color="primary">
+                            {dc.useable ? "Use Card" : "Close"}
+                        </Button>
+                    }
                 </DialogActions>
             </Dialog>
         </div>

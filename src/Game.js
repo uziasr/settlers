@@ -143,9 +143,39 @@ const moves = {
     }
 
   },
-  useDevelopmentCard: (G, ctx) => {
+  developmentCardAction: (G, ctx, dc, yearOfPlenty = {}, monopoly = null) => {
     const currentPlayer = G.playOrder[ctx.currentPlayer]
-    currentPlayer.developmentCards.forEach(card => card.useable = card.type === "Victory Point" ? false : true)
+    switch (dc.type) {
+      case "Road Builder": {
+
+      }
+      case "Year of Plenty": {
+        currentPlayer.cards["wood"] += yearOfPlenty["wood"]
+        currentPlayer.cards["brick"] += yearOfPlenty["brick"]
+        currentPlayer.cards["hay"] += yearOfPlenty["hay"]
+        currentPlayer.cards["sheep"] += yearOfPlenty["sheep"]
+        currentPlayer.cards["mineral"] += yearOfPlenty["mineral"]
+        currentPlayer.developmentCards = currentPlayer.developmentCards.filter(card => card != dc)
+        G.developmentDeck.push(dc)
+      }
+      case "Monopoly": {
+        G.players.forEach(player => {
+          let playerCards = 0;
+          if (player !== currentPlayer) {
+            playerCards = player[monopoly]
+            player[monopoly] = 0
+          }
+          currentPlayer.cards[monopoly] += playerCards
+        })
+        currentPlayer.developmentCards = currentPlayer.developmentCards.filter(card => card != dc)
+        G.developmentDeck.push(dc)
+        G.developmentCardUsed = true
+      }
+      case "Knight": {
+
+      }
+    }
+    // currentPlayer.developmentCards.forEach(card => card.useable = card.type === "Victory Point" ? false : true)
 
   },
   buildRoad: (G, ctx, node) => {
@@ -161,7 +191,7 @@ export const Catan = {
   name: "settlers",
   setup: (ctx, setupData) => {
     const tiles = board.tiles
-    const scoreboard = {};
+    // const scoreboard = {};
     const players = [new Player("Bill", "white"), new Player("Alex", "red"), new Player("Fern", "blue"), new Player("Daren", "orange")]
     const nodes = [...board.graph.adjList.keys()]
     // const nodes = board.graph.adjList
@@ -195,6 +225,7 @@ export const Catan = {
       initialPlacementsCount: 0,
       tiles: tiles,
       nodes: nodes,
+      developmentCardUsed: false,
     };
     return initialState;
   },
@@ -223,7 +254,8 @@ export const Catan = {
           placeSettlement: moves.buildSettlement,
           buildCity: moves.buildCity,
           getDevelopmentCard: moves.getDevelopmentCard,
-          completeTurn: moves.completeTurn
+          completeTurn: moves.completeTurn,
+          developmentCardAction: moves.developmentCardAction,
         }
       }
 

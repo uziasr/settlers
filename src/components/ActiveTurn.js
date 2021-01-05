@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DCDialog from "./DevelopmentCardDialog"
+import CardView from "./DevelopmentCardDialog"
 import Tooltip from '@material-ui/core/Tooltip';
 import Dice from "./Dice"
 
@@ -11,7 +11,7 @@ let developmentCards = [
     { type: "Monopoly", useable: true, img: "image/monopoly.jpg" }
 ]
 
-const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType }) => {
+const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmentCardAction }) => {
 
     let placeHolderCard = { type: "Knight", useable: false, img: "image/knight.jpg" }
     const [open, setOpen] = useState(false);
@@ -88,7 +88,13 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType }) => {
                 </div>
                 <Dice roll={roll} />
             </div>
-            <DCDialog open={open} setOpen={setOpen} dc={focusedDC} />
+            <CardView
+                open={open}
+                setOpen={setOpen}
+                dc={focusedDC}
+                player={player}
+                developmentCardAction={developmentCardAction}
+            />
         </div>
     );
 };

@@ -335,25 +335,6 @@ class DevelopmentCard {
         this.type = type
         this.useable = useable
     }
-    use() {
-
-    }
-    effect() {
-        switch (this.type) {
-            case "Knight": {
-
-            }
-            case "Road Builder": {
-
-            }
-            case "Year of Plenty": {
-
-            }
-            case "Monopoly": {
-
-            }
-        }
-    }
 }
 
 class DevelopmentDeck {

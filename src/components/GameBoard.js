@@ -162,6 +162,7 @@ class Board extends React.Component {
                     roll={this.props.moves.roll}
                     player={this.props.G.playOrder[this.props.ctx.currentPlayer]}
                     buildType={this.state.buildType}
+                    developmentCardAction={this.props.moves.developmentCardAction}
                 />
                 {this.resetMap()}
             </div>

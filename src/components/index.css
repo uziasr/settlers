@@ -346,7 +346,146 @@ td {
     margin: 0;
 }
 
+.node-1 {
+    position: absolute;
+    bottom: 49px;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    z-index: 2;
+    left: -8px;
+}
+
+.node-2 {
+    position: absolute;
+    bottom: 78px;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    z-index: 2;
+    left: 45px;
+}
+
+.node-3 {
+    position: absolute;
+    bottom: 49px;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    z-index: 2;
+    left: 96px;
+}
+
+.node-4 {
+    position: absolute;
+    bottom: -10px;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    z-index: 2;
+    left: 96px;
+}
+
+.node-5 {
+    position: absolute;
+    bottom: -38px;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    z-index: 2;
+    left: 45px;
+}
+
+.node-6 {
+    position: absolute;
+    bottom: -11px;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    z-index: 2;
+    left: -5px;
+}
+
+.road {
+    position: absolute;
+    z-index: 1;
+}
+
+/* .road-56 {
+    transform: rotate(-62deg);
+    left: -14px;
+    z-index: 1;
+}
+
+.road-12 {
+    transform: rotate(58deg);
+    left: 64px;
+    top: -27px;
+    z-index: 1;
+}
+
+.road-23 {
+    transform: rotate(-62deg);
+    left: 90px;
+}
+
+.road-34 {
+    left: 61px;
+    top: 60px;
+    z-index: 1;
+}
+
+.road-45 {
+    transform: rotate(58deg);
+    left: 11px;
+    top: 62px;
+    z-index: 1;
+}
+
+.road-61 {
+    left: 11px;
+    top: -28px;
+    z-index: 1;
+} */
+
 /* .settlement {
     left: 35px !important;
     top: -44px !important;
 } */
+
+.road-61 {
+    transform: rotate(-62deg);
+    left: -14px;
+    z-index: 1;
+}
+
+.road-23 {
+    transform: rotate(58deg);
+    left: 64px;
+    top: -27px;
+    z-index: 1;
+}
+
+.road-34 {
+    transform: rotate(-62deg);
+    left: 90px;
+}
+
+.road-45 {
+    left: 61px;
+    top: 60px;
+    z-index: 1;
+}
+
+.road-56 {
+    transform: rotate(58deg);
+    left: 11px;
+    top: 62px;
+    z-index: 1;
+}
+
+.road-12 {
+    left: 11px;
+    top: -28px;
+    z-index: 1;
+}

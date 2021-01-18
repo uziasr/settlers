@@ -4,7 +4,7 @@ class Node {
         this.tiles = [tile]
         this.yields = []
         this.canBuild = true
-        this.roadsTo = {}
+        this.roadsTo = new Map()
     }
     // toString() {
     //     return `[${this.tiles}]`
@@ -277,9 +277,10 @@ class Board {
     }
 
     connectRoad(targetNode, fromNode, road) {
-        console.log(road)
-        targetNode.roadsTo[road] = fromNode
-        fromNode.roadsTo[road] = targetNode
+        if (!targetNode.roadsTo.get(road)) {
+            targetNode.roadsTo.set(fromNode, road)
+            fromNode.roadsTo.set(targetNode, road)
+        } 
     }
 
     createBoard() {

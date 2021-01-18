@@ -219,6 +219,7 @@ class Territory extends React.Component {
                         nodes={this.props.nodes}
                         nodeHash={this.state.nodeHash}
                         nodeAction={this.props.nodeAction}
+                        tile={this.props.territory_props}
                     />
                     <p className="number">{this.props.territory_props.roll}</p>
                     <p className="probability-ticks">{".".repeat(this.props.territory_props.prob)}</p>

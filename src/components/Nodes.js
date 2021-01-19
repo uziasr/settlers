@@ -12,15 +12,15 @@ const Nodes = ({ nodes, nodeAction, tile, potentialRoads }) => {
         <>
             {validNodes.map((nodeIndex, index) => (
                 <div className={`node-${nodeIndex}`} key={index} style={{
-                    color: nodes[nodeIndex].placement ? nodes[nodeIndex].placement.color : "black",
+                    color: nodes[nodeIndex].node.placement ? nodes[nodeIndex].node.placement.color : nodes[nodeIndex].color,
                     cursor: "pointer",
                 }}
-                    onClick={() => nodeAction(nodes[nodeIndex])}
+                    onClick={() => nodeAction(nodes[nodeIndex].node)}
                 >
-                    {nodes[nodeIndex].placement === null ?
+                    {nodes[nodeIndex].node.placement === null ?
                         <p>o</p>
                         :
-                        nodes[nodeIndex].placement.item === "settlement" ?
+                        nodes[nodeIndex].node.placement.item === "settlement" ?
                             <FontAwesomeIcon icon={faHome} style={{ stroke: "black", strokeWidth: 40, fontSize: "24px", left: "30px" }} />
                             :
                             <FontAwesomeIcon icon={faBuilding} />}
@@ -38,4 +38,4 @@ const Nodes = ({ nodes, nodeAction, tile, potentialRoads }) => {
 
 export default Nodes;
 
-//nodes[nodeIndex].placement == null ? "" : nodes[nodeIndex].placement.item === "settlement" ? "settlement" : "city"
+//nodes[nodeIndex].node.placement == null ? "" : nodes[nodeIndex].node.placement.item === "settlement" ? "settlement" : "city"

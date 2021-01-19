@@ -34,12 +34,16 @@ class Board extends React.Component {
 
 
 
-    renderTerritory(i) {
+    renderTerritory(i, players=null) {
+        let player = this.props.G.playOrder[this.props.ctx.currentPlayer]
         let tile = this.state.board_pieces[i]
         let returnNodes = {}
+        let potentialRoads = this.state.buildType === "road" ? roadSearch(player): []
+        // console.log("this is potential roads", potentialRoads, )
+        // console.log(player)
         for (let nodeIndex in tile.edges) {
             if (usedNodes.get(tile.edges[nodeIndex]) === undefined) {
-                returnNodes[nodeIndex] = tile.edges[nodeIndex]
+                returnNodes[nodeIndex] = {node: tile.edges[nodeIndex], color: potentialRoads.includes(tile.edges[nodeIndex])? player.color :"black" }
                 usedNodes.set(tile.edges[nodeIndex], true)
             }
         }
@@ -180,7 +184,6 @@ class Territory extends React.Component {
     constructor(props) {
         super(props)
     }
-
 
     render() {
         if (!this.props.territory_props) {

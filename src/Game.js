@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { board, Player, developmentCards } from "./components/gameLogic"
-import { current } from 'immer';
+// import { current } from 'immer';
 
 const moves = {
   initialRoll: (G, ctx, roll) => {
@@ -31,6 +31,7 @@ const moves = {
       node.placement = currentPlayer.settlements.pop()
       currentPlayer.points++
       node.canBuild = false
+      currentPlayer.placements.push(node)
       if (G.initialPlacementsCount >= G.players.length) {
         node.yields.forEach(resource => currentPlayer.cards[resource] !== undefined ? currentPlayer.cards[resource]++ : null)
         console.log(currentPlayer)
@@ -256,6 +257,7 @@ export const Catan = {
           getDevelopmentCard: moves.getDevelopmentCard,
           completeTurn: moves.completeTurn,
           developmentCardAction: moves.developmentCardAction,
+          buildRoad: moves.buildRoad
         }
       }
 

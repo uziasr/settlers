@@ -57,7 +57,9 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmen
                     <h3 style={{ marginBottom: "10px" }}>Moves</h3>
                     <div className="topBuilds">
                         <Tooltip title={buildType === "road" ? "Select a node" : "1 wood, 1 brick"}>
-                            <div className="build" onClick={() => setBuildType("road")}>
+                            <div className="build" onClick={() => {
+                                setBuildType("road")
+                                }}>
                                 <p style={{ color: buildType === "road" ? "white" : "black" }}>Road</p>
                             </div>
                         </Tooltip>

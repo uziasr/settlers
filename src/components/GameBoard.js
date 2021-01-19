@@ -5,6 +5,7 @@ import { board } from "./gameLogic"
 import ActiveTurn from "./ActiveTurn"
 import Nodes from "./Nodes"
 import ScoreBoard from "./ScoreBoard"
+import { roadSearch } from "../utils/roadSearch"
 
 // board.createBoard()
 
@@ -25,10 +26,13 @@ class Board extends React.Component {
 
             renderAgain: false,
             buildType: null,
-            currentPlayer: this.props.G.playOrder[this.props.ctx.currentPlayer]
+            currentPlayer: this.props.G.playOrder[this.props.ctx.currentPlayer],
+            potentialRoads: []
         }
         this.setBuildType = this.setBuildType.bind(this)
     }
+
+
 
     renderTerritory(i) {
         let tile = this.state.board_pieces[i]
@@ -47,6 +51,8 @@ class Board extends React.Component {
                 nodeHash={this.state.nodeHash}
                 moves={this.props.moves}
                 nodeAction={this.nodeAction}
+                potentialRoads={this.state.buildType === "road" ? 
+                roadSearch( this.state.currentPlayer): []}
             />
         )
     }
@@ -151,9 +157,9 @@ class Board extends React.Component {
                             <div className="spacer"></div>
                         </div>
                     </div>
-                    <ScoreBoard 
-                    players={this.props.G.playOrder}
-                    currentPlayer={this.props.G.playOrder[this.props.ctx.currentPlayer]}
+                    <ScoreBoard
+                        players={this.props.G.playOrder}
+                        currentPlayer={this.props.G.playOrder[this.props.ctx.currentPlayer]}
                     />
                 </div>
                 <ActiveTurn
@@ -173,35 +179,8 @@ class Board extends React.Component {
 class Territory extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            nodeHash: {
-                "1": {
-                    position: "absolute", bottom: "49px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "-5px"
-                },
-                "2": {
-                    position: "absolute", bottom: "78px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "45px"
-                },
-                "3": {
-                    position: "absolute", bottom: "49px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "96px"
-                },
-                "4": {
-                    position: "absolute", bottom: "-10px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "96px"
-                },
-                "5": {
-                    position: "absolute", bottom: "-38px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "45px"
-                },
-                "6": {
-                    position: "absolute", bottom: "-11px", fontWeight: "bold", fontSize: "20px", color: "black", zIndex: 1,
-                    left: "-5px"
-                }
-            },
-        }
     }
+
 
     render() {
         if (!this.props.territory_props) {
@@ -217,9 +196,11 @@ class Territory extends React.Component {
 
                     <Nodes
                         nodes={this.props.nodes}
-                        nodeHash={this.state.nodeHash}
                         nodeAction={this.props.nodeAction}
                         tile={this.props.territory_props}
+                        buildType={this.props.buildType}
+                        player={this.props.player}
+                        potentialRoads={this.props.potentialRoads}
                     />
                     <p className="number">{this.props.territory_props.roll}</p>
                     <p className="probability-ticks">{".".repeat(this.props.territory_props.prob)}</p>

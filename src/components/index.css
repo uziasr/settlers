@@ -489,3 +489,7 @@ td {
     top: -28px;
     z-index: 1;
 }
+
+.debug-panel {
+    visibility: hidden;
+}

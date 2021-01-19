@@ -325,6 +325,7 @@ class Player {
         this.handQuantity = Object.keys(this.cards).reduce((acc, curr) => acc + this.cards[curr], 0)
         this.points = 0
         this.developmentCards = []
+        this.placements = []
     }
     toString() {
         return `Player(name=${this.name}, color=${this.color})`

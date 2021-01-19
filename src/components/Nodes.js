@@ -1,14 +1,12 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBuilding, faHome, faRuler, faRulerVertical } from '@fortawesome/free-solid-svg-icons'
+import { faBuilding, faHome, faRuler } from '@fortawesome/free-solid-svg-icons'
 import { roadTool } from "../utils/roadTool"
 
-const Nodes = ({ nodes, nodeAction, tile }) => {
-    let validNodes = [...Object.keys(nodes)]
-    // console.log(tile)
-    // console.log(validNodes)
-    let roads = roadTool(validNodes, tile)
-    // console.log(roads)
+const Nodes = ({ nodes, nodeAction, tile, potentialRoads }) => {
+    const validNodes = [...Object.keys(nodes)]
+    const  roads = roadTool(validNodes, tile)
+    // console.log("revisited", potentialRoads)
 
     return (
         <>
@@ -29,12 +27,11 @@ const Nodes = ({ nodes, nodeAction, tile }) => {
                 </div>
             ))
             }
-            {roads.map(road=>(
+            {roads.map(road => (
                 <div className={`road road-${road.loc}`}>
-                    <FontAwesomeIcon style={{fontSize:"24px", color: road.road.color, stroke: "black", strokeWidth: 40}}  icon={faRuler}/>
+                    <FontAwesomeIcon style={{ fontSize: "24px", color: road.road.color, stroke: "black", strokeWidth: 40 }} icon={faRuler} />
                 </div>
             ))}
-            {/* <div className="road" style={{  transform: "rotate(-62deg)"}}><FontAwesomeIcon style={{fontSize:"24px"}}  icon={faRuler}/></div> */}
         </>
     );
 };

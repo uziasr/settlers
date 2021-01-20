@@ -23,7 +23,7 @@ export const roadSearch = (player) => {
                 // console.log("this is road", road)
                 if (!node.placement && !road) {
                     // if there is no settlement and no road
-                    availableRoads.push(node)
+                    availableRoads.push({to:node, from:currentNode})
                 } else if (road && road.color === player.color) {
                     // console.log("these are the same color")
                     roadQueue.push(node)

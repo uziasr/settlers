@@ -3,10 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuilding, faHome, faRuler } from '@fortawesome/free-solid-svg-icons'
 import { roadTool } from "../utils/roadTool"
 
-const Nodes = ({ nodes, nodeAction, tile, potentialRoads }) => {
+const Nodes = ({ nodes, nodeAction, tile, newRoadNode }) => {
     const validNodes = [...Object.keys(nodes)]
     const  roads = roadTool(validNodes, tile)
     // console.log("revisited", potentialRoads)
+    console.log("this is newRoadNodes",newRoadNode)
 
     return (
         <>
@@ -15,7 +16,7 @@ const Nodes = ({ nodes, nodeAction, tile, potentialRoads }) => {
                     color: nodes[nodeIndex].node.placement ? nodes[nodeIndex].node.placement.color : nodes[nodeIndex].color,
                     cursor: "pointer",
                 }}
-                    onClick={() => nodeAction(nodes[nodeIndex].node)}
+                    onClick={() => nodeAction(nodes[nodeIndex].node, newRoadNode? newRoadNode.from : null )}
                 >
                     {nodes[nodeIndex].node.placement === null ?
                         <p>o</p>

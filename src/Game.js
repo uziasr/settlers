@@ -179,8 +179,16 @@ const moves = {
     // currentPlayer.developmentCards.forEach(card => card.useable = card.type === "Victory Point" ? false : true)
 
   },
-  buildRoad: (G, ctx, node) => {
-
+  buildRoad: (G, ctx, node, legalRoad) => {
+    const currentPlayer = G.playOrder[ctx.currentPlayer]
+    console.log("hi",legalRoad, "hey", node)
+    if (currentPlayer.cards["wood"] >= 1 && currentPlayer.cards["brick"] >= 1 && legalRoad) {
+      currentPlayer.cards["wood"]--
+      currentPlayer.cards["brick"]--
+      board.connectRoad(node, legalRoad, currentPlayer.roads.pop())
+    } else {
+      return INVALID_MOVE
+    }
   },
   completeTurn: (G, ctx, node) => {
     ctx.events.endTurn()

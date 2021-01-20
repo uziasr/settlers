@@ -34,16 +34,28 @@ class Board extends React.Component {
 
 
 
-    renderTerritory(i, players=null) {
+    renderTerritory(i, players = null) {
+        // console.log(this.props.ctx, this.props.G)
         let player = this.props.G.playOrder[this.props.ctx.currentPlayer]
         let tile = this.state.board_pieces[i]
         let returnNodes = {}
-        let potentialRoads = this.state.buildType === "road" ? roadSearch(player): []
+        let potentialRoads = this.state.buildType === "road" ? roadSearch(player) : []
         // console.log("this is potential roads", potentialRoads, )
         // console.log(player)
+        let roadNode = null
+        let newRoadNode = null
         for (let nodeIndex in tile.edges) {
             if (usedNodes.get(tile.edges[nodeIndex]) === undefined) {
-                returnNodes[nodeIndex] = {node: tile.edges[nodeIndex], color: potentialRoads.includes(tile.edges[nodeIndex])? player.color :"black" }
+                roadNode = potentialRoads.reduce((acc,curr) => {
+                    if (acc){
+                        return acc
+                    } else if (curr.to === tile.edges[nodeIndex]){
+                        newRoadNode = (curr)
+                        return tile.edges[nodeIndex]
+                    }
+            },null)                
+                // returnNodes[nodeIndex] = { node: tile.edges[nodeIndex], color: potentialRoads.includes(tile.edges[nodeIndex]) ? player.color : "black" }
+                returnNodes[nodeIndex] = { node: tile.edges[nodeIndex], color: roadNode ? player.color : "black" }
                 usedNodes.set(tile.edges[nodeIndex], true)
             }
         }
@@ -55,18 +67,25 @@ class Board extends React.Component {
                 nodeHash={this.state.nodeHash}
                 moves={this.props.moves}
                 nodeAction={this.nodeAction}
-                potentialRoads={this.state.buildType === "road" ? 
-                roadSearch( this.state.currentPlayer): []}
+                newRoadNode={newRoadNode}
+                potentialRoads={this.state.buildType === "road" ?
+                    roadSearch(this.state.currentPlayer) : []}
             />
         )
     }
 
-    nodeAction = (node) => {
+    nodeAction = (node, legalRoad) => {
         switch (this.state.buildType) {
             case "road": {
-                this.props.moves.placeRoad(node)
-                this.setState({ ...this.state, buildType: null })
-                break
+                if (this.props.ctx.phase === "initialPlacings") {
+                    this.props.moves.placeRoad(node, legalRoad)
+                    this.setState({ ...this.state, buildType: null })
+                    break
+                } else if (this.props.ctx.phase === "mainGame") {
+                    this.props.moves.buildRoad(node, legalRoad)
+                    this.setState({ ...this.state, buildType: null })
+                    break
+                }
             }
             case "settlement": {
                 this.props.moves.placeSettlement(node)
@@ -204,6 +223,7 @@ class Territory extends React.Component {
                         buildType={this.props.buildType}
                         player={this.props.player}
                         potentialRoads={this.props.potentialRoads}
+                        newRoadNode={this.props.newRoadNode}
                     />
                     <p className="number">{this.props.territory_props.roll}</p>
                     <p className="probability-ticks">{".".repeat(this.props.territory_props.prob)}</p>

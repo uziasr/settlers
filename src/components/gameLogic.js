@@ -280,7 +280,7 @@ class Board {
         if (!targetNode.roadsTo.get(road)) {
             targetNode.roadsTo.set(fromNode, road)
             fromNode.roadsTo.set(targetNode, road)
-        } 
+        }
     }
 
     createBoard() {
@@ -344,17 +344,48 @@ class DevelopmentDeck {
         this.deck = this.createDeck()
     }
     createDeck() {
-        const knights = "Knight,".repeat(14).trim().split(",").slice(0, 14).map(card => new DevelopmentCard(card, false))
-        const victory = "Victory Point,".repeat(5).trim().split(",").slice(0, 5).map(card => new DevelopmentCard(card, false))
-        const roadBuilder = "Road Builder,".repeat(2).trim().split(",").slice(0, 2).map(card => new DevelopmentCard(card, false))
-        const yearOfPlenty = "Year of Plenty,".repeat(2).trim().split(",").slice(0, 2).map(card => new DevelopmentCard(card, false))
-        const monopoly = "Monopoly,".repeat(2).trim().split(",").slice(0, 2).map(card => new DevelopmentCard(card, false))
+        const knights = [
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+            new DevelopmentCard("Knight", true),
+        ]
+        const victory = [
+            new DevelopmentCard("Victory Point", true),
+            new DevelopmentCard("Victory Point", true),
+            new DevelopmentCard("Victory Point", true),
+            new DevelopmentCard("Victory Point", true),
+            new DevelopmentCard("Victory Point", true),
+        ]
+        const roadBuilder = [
+            new DevelopmentCard("Road Builder", true),
+            new DevelopmentCard("Road Builder", true),
+        ]
+        const yearOfPlenty = [
+            new DevelopmentCard("Year of Plenty", true),
+            new DevelopmentCard("Year of Plenty", true),
+        ]
+        const monopoly = [
+            new DevelopmentCard("Monopoly", true),
+            new DevelopmentCard("Monopoly", true)
+        ]
+
         let deck = [...knights, ...victory, ...roadBuilder, ...yearOfPlenty, ...monopoly]
         for (let i = deck.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [deck[i], deck[j]] = [deck[j], deck[i]];
         }
-        return deck
+        return [new DevelopmentCard("Monopoly", true), ...deck]
     }
 }
 
@@ -364,6 +395,8 @@ let developmentCards = new DevelopmentDeck()
 developmentCards.createDeck()
 console.log(board.graph.adjList)
 export { board, Player, developmentCards }
+
+
 
 
 

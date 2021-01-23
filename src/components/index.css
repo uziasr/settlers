@@ -411,48 +411,6 @@ td {
     z-index: 1;
 }
 
-/* .road-56 {
-    transform: rotate(-62deg);
-    left: -14px;
-    z-index: 1;
-}
-
-.road-12 {
-    transform: rotate(58deg);
-    left: 64px;
-    top: -27px;
-    z-index: 1;
-}
-
-.road-23 {
-    transform: rotate(-62deg);
-    left: 90px;
-}
-
-.road-34 {
-    left: 61px;
-    top: 60px;
-    z-index: 1;
-}
-
-.road-45 {
-    transform: rotate(58deg);
-    left: 11px;
-    top: 62px;
-    z-index: 1;
-}
-
-.road-61 {
-    left: 11px;
-    top: -28px;
-    z-index: 1;
-} */
-
-/* .settlement {
-    left: 35px !important;
-    top: -44px !important;
-} */
-
 .road-61 {
     transform: rotate(-62deg);
     left: -14px;
@@ -493,3 +451,35 @@ td {
 .debug-panel {
     visibility: hidden;
 }
+
+.monopolyDialog {
+    display: flex;
+    justify-content: center;
+    /* margin: 0 2%; */
+    padding: 0 2%;
+    /* width: 100%; */
+}
+.resourceCardMonopoly {
+    background: lightskyblue;
+    font-size: 60px;
+    /* width: 25%; */
+    padding: 10px;
+    border-radius: 30px;
+    margin: 0 1%;
+    cursor: pointer;
+}
+
+.active {
+    background: mediumseagreen;
+}
+
+.resourceCardMonopoly:hover {
+    transition: 500ms;
+    background: mediumseagreen;
+}
+
+.MuiDialogContent-root {
+    overflow-y: unset !important;
+}
+
+

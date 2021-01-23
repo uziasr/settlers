@@ -11,7 +11,7 @@ let developmentCards = [
     { type: "Monopoly", useable: true, img: "image/monopoly.jpg" }
 ]
 
-const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmentCardAction }) => {
+const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmentCardAction, getDevelopmentCard }) => {
 
     let placeHolderCard = { type: "Knight", useable: false, img: "image/knight.jpg" }
     const [open, setOpen] = useState(false);
@@ -21,6 +21,14 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmen
         setFocusedDC(() => dc)
         setOpen(true);
     };
+
+    const developmentImgHash = {
+        "Knight": "image/knight.jpg",
+        "Monopoly": "image/monopoly.jpg",
+        "Road Builder": "image/roadBuilder.jpg",
+        "Victory Point": "image/victoryPoint.jpg",
+        "Year of Plenty": "image/yearOfPlenty.jpg"
+    }
 
     return (
         <div className="userControls">
@@ -38,12 +46,13 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmen
                 <div className="developmentCardsRoot">
                     <h3>Development Cards</h3>
                     <div className="developmentCards">
-                        {developmentCards.length ?
-                            developmentCards.map((dc, index) => (
-                                <div key={index} onClick={() => handleClickOpen(dc)} className="developmentCard">
-                                    <img className="developmentCardImg" src={dc.img}></img>
-                                </div>
-                            ))
+                        {player.developmentCards.length ?
+                            player.developmentCards.map((dc, index) => {
+                                console.log(dc)
+                                return (<div key={index} onClick={() => handleClickOpen(dc)} className="developmentCard">
+                                    <img className="developmentCardImg" src={developmentImgHash[dc.type]}></img>
+                                </div>)
+                            })
                             :
                             <div style={{ visibility: "hidden" }} className="developmentCard">
                                 <img className="developmentCardImg" alt="sneaky but you can't use :)" src={placeHolderCard.img}></img>
@@ -59,7 +68,7 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmen
                         <Tooltip title={buildType === "road" ? "Select a node" : "1 wood, 1 brick"}>
                             <div className="build" onClick={() => {
                                 setBuildType("road")
-                                }}>
+                            }}>
                                 <p style={{ color: buildType === "road" ? "white" : "black" }}>Road</p>
                             </div>
                         </Tooltip>
@@ -79,7 +88,10 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmen
                             </div>
                         </Tooltip>
                         <Tooltip title="1 sheep, 1 hay, 1 mineral">
-                            <div className="build">
+                            <div className="build" onClick={() => {
+                                console.log("this is logging", getDevelopmentCard)
+                                getDevelopmentCard()
+                            }}>
                                 <p>Development Card</p>
                             </div>
                         </Tooltip>
@@ -94,6 +106,7 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmen
                 open={open}
                 setOpen={setOpen}
                 dc={focusedDC}
+                dcImg={developmentImgHash[focusedDC.type]}
                 player={player}
                 developmentCardAction={developmentCardAction}
             />

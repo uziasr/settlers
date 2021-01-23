@@ -129,7 +129,7 @@ const YearOfPlenty = ({ yearOfPlentyInputs, setYearOfPlentyInputs }) => {
     )
 }
 
-export default function DCDialog({ open, setOpen, dc, player, developmentCardAction }) {
+export default function DCDialog({ open, setOpen, dc, dcImg, player, developmentCardAction }) {
 
     const [additionalStep, setAdditionalStep] = useState(null)
     const [yearOfPlentyInputs, setYearOfPlentyInputs] = useState({
@@ -142,15 +142,20 @@ export default function DCDialog({ open, setOpen, dc, player, developmentCardAct
 
     const [monopolyResource, setMonopolyResource] = useState(null)
 
-    const Monopoly = () => (
-        <div>
-            <div className="resourceCard">🌲</div>
-            <div className="resourceCard">🧱</div>
-            <div className="resourceCard">🌾</div>
-            <div className="resourceCard">🐑</div>
-            <div className="resourceCard"><span style={{ color: "black" }}>⛏</span></div>
-        </div>
-    )
+    const Monopoly = ({ setResource, resource }) => {
+
+        const resourceHandler = (newResource) => {
+            setResource(newResource === resource ? null : newResource)
+        }
+
+        return (<div className="monopolyDialog">
+            <div onClick={() => resourceHandler("wood")} className={`resourceCardMonopoly ${resource === "wood" ? "active" : ""}`}>🌲</div>
+            <div onClick={() => resourceHandler("brick")} className={`resourceCardMonopoly ${resource === "brick" ? "active" : ""}`}>🧱</div>
+            <div onClick={() => resourceHandler("hay")} className={`resourceCardMonopoly ${resource === "hay" ? "active" : ""}`}>🌾</div>
+            <div onClick={() => resourceHandler("sheep")} className={`resourceCardMonopoly ${resource === "sheep" ? "active" : ""}`}>🐑</div>
+            <div onClick={() => resourceHandler("mineral")} className={`resourceCardMonopoly ${resource === "mineral" ? "active" : ""}`}><span style={{ color: "black" }}>⛏</span></div>
+        </div>)
+    }
 
     const dcDescriptions = {
         "Knight": "Move the robber. Steal 1 resource from the owner of a settlement or city adjacent to the robber's new hex.",
@@ -163,6 +168,14 @@ export default function DCDialog({ open, setOpen, dc, player, developmentCardAct
     const handleClose = () => {
         setOpen(false);
         setAdditionalStep(null)
+        setMonopolyResource(null)
+        setYearOfPlentyInputs({
+            "wood": 0,
+            "brick": 0,
+            "hay": 0,
+            "sheep": 0,
+            "mineral": 0
+        })
     };
 
     const cardAction = () => {
@@ -170,10 +183,22 @@ export default function DCDialog({ open, setOpen, dc, player, developmentCardAct
         handleClose()
     }
 
-    const handleMonopolyAndYear = (dc) => {
-        setAdditionalStep(dc.type == "Monopoly" ? "Monopoly" : "Year of Plenty")
+    const validUse = () => {
+        console.log(additionalStep, monopolyResource!==null)
+        if (additionalStep === "Year of Plenty"){
+            return Object.keys(yearOfPlentyInputs).reduce((acc, curr)=> acc + yearOfPlentyInputs[curr] ,0) !== 2
+        } else if (additionalStep === "Monopoly"){
+            return monopolyResource===null
+        }
+        return false
+    }
+
+    const handleMonopolyAndYear = (dcType) => {
+        // console.log("this is the dc.type", dc.type, dc)
+        setAdditionalStep(dcType)
         // handleClose()
     }
+    console.log(additionalStep)
 
     return (
         <div>
@@ -188,17 +213,23 @@ export default function DCDialog({ open, setOpen, dc, player, developmentCardAct
                     <Typography gutterBottom>{dcDescriptions[dc.type]}</Typography>
                 </DialogContent>
                 <DialogContent style={{ margin: "0 auto" }}>
-                    {additionalStep === null ? <img src={dc.img}></img> : additionalStep === "Monopoly" ? <Monopoly /> : <YearOfPlenty yearOfPlentyInputs={yearOfPlentyInputs} setYearOfPlentyInputs={setYearOfPlentyInputs} />}
+                    {additionalStep === null ? <img src={dcImg}></img> : additionalStep === "Monopoly" ? <Monopoly resource={monopolyResource} setResource={setMonopolyResource} /> : <YearOfPlenty yearOfPlentyInputs={yearOfPlentyInputs} setYearOfPlentyInputs={setYearOfPlentyInputs} />}
                 </DialogContent>
                 <DialogActions>
-                    {additionalStep === null ?
-                        <Button autoFocus onClick={["Monopoly", "Year of Plenty"].includes(dc.type) ? handleMonopolyAndYear : cardAction} color="primary">
-                            Use Card
-                        </Button>
-                        :
-                        <Button autoFocus onClick={cardAction} color="primary">
-                            {dc.useable ? "Use Card" : "Close"}
-                        </Button>
+                    {
+                        !dc.useable ?
+                            <Button autoFocus onClick={handleClose} color="primary">
+                                Close
+                             </Button>
+                            :
+                            additionalStep === null ?
+                                <Button autoFocus  onClick={() => !["Monopoly", "Year of Plenty"].includes(dc.type) ? cardAction() : handleMonopolyAndYear(dc.type)} color="primary">
+                                    Use Card
+                                </Button>
+                                :
+                                <Button autoFocus disabled={validUse()} onClick={cardAction} color="primary">
+                                    {dc.useable ? "Use Card" : "Close"}
+                                </Button>
                     }
                 </DialogActions>
             </Dialog>

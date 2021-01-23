@@ -9,7 +9,7 @@ const moves = {
       establishingOrder.highestRoll = roll
       establishingOrder.playerIndex = ctx.currentPlayer
     }
-    if (ctx.currentPlayer == "3") {
+    if (ctx.currentPlayer === "3") {
       establishingOrder.iterations = 1
       let players = [...G.players]
       let newOrder = [...players.slice(Number(G.establishingOrder.playerIndex), 4), ...players.slice(0, Number(G.establishingOrder.playerIndex))]
@@ -121,7 +121,7 @@ const moves = {
     const currentPlayer = G.playOrder[ctx.currentPlayer]
     const adequateCards = currentPlayer.cards["hay"] >= 3 && currentPlayer.cards["mineral"] >= 2
     const adequateCities = currentPlayer.cities.length
-    const settlementOwnership = node.placement && node.placement.color == currentPlayer.color
+    const settlementOwnership = node.placement && node.placement.color === currentPlayer.color
     if (adequateCards && adequateCities & settlementOwnership) {
       currentPlayer["hay"] -= 3
       currentPlayer["mineral"] -= 2
@@ -138,7 +138,7 @@ const moves = {
       currentPlayer.cards["mineral"]--
       currentPlayer.cards["sheep"]--
       currentPlayer.cards["hay"]--
-      currentPlayer.developmentCards.push(G.developmentCards.shift())
+      currentPlayer.developmentCards.push(G.developmentDeck.shift())
     } else {
       return INVALID_MOVE
     }
@@ -148,7 +148,7 @@ const moves = {
     const currentPlayer = G.playOrder[ctx.currentPlayer]
     switch (dc.type) {
       case "Road Builder": {
-
+        break
       }
       case "Year of Plenty": {
         currentPlayer.cards["wood"] += yearOfPlenty["wood"]
@@ -156,24 +156,30 @@ const moves = {
         currentPlayer.cards["hay"] += yearOfPlenty["hay"]
         currentPlayer.cards["sheep"] += yearOfPlenty["sheep"]
         currentPlayer.cards["mineral"] += yearOfPlenty["mineral"]
-        currentPlayer.developmentCards = currentPlayer.developmentCards.filter(card => card != dc)
+        currentPlayer.developmentCards = currentPlayer.developmentCards.filter(card => card !== dc)
         G.developmentDeck.push(dc)
+        break
       }
       case "Monopoly": {
         G.players.forEach(player => {
+          // console.log(mono)
           let playerCards = 0;
           if (player !== currentPlayer) {
-            playerCards = player[monopoly]
-            player[monopoly] = 0
+            playerCards = player.cards[monopoly]
+            player.cards[monopoly] = 0
           }
           currentPlayer.cards[monopoly] += playerCards
         })
-        currentPlayer.developmentCards = currentPlayer.developmentCards.filter(card => card != dc)
+        currentPlayer.developmentCards = currentPlayer.developmentCards.filter(card => card !== dc)
         G.developmentDeck.push(dc)
         G.developmentCardUsed = true
+        break
       }
       case "Knight": {
-
+        break
+      }
+      default: {
+        break
       }
     }
     // currentPlayer.developmentCards.forEach(card => card.useable = card.type === "Victory Point" ? false : true)

@@ -48,7 +48,7 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmen
                     <div className="developmentCards">
                         {player.developmentCards.length ?
                             player.developmentCards.map((dc, index) => {
-                                console.log(dc)
+
                                 return (<div key={index} onClick={() => handleClickOpen(dc)} className="developmentCard">
                                     <img className="developmentCardImg" src={developmentImgHash[dc.type]}></img>
                                 </div>)
@@ -89,7 +89,6 @@ const ActiveTurn = ({ setBuildType, endTurn, roll, player, buildType, developmen
                         </Tooltip>
                         <Tooltip title="1 sheep, 1 hay, 1 mineral">
                             <div className="build" onClick={() => {
-                                console.log("this is logging", getDevelopmentCard)
                                 getDevelopmentCard()
                             }}>
                                 <p>Development Card</p>

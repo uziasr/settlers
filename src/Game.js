@@ -34,7 +34,6 @@ const moves = {
       currentPlayer.placements.push(node)
       if (G.initialPlacementsCount >= G.players.length) {
         node.yields.forEach(resource => currentPlayer.cards[resource] !== undefined ? currentPlayer.cards[resource]++ : null)
-        console.log(currentPlayer)
       }
     } else {
       return INVALID_MOVE
@@ -42,15 +41,12 @@ const moves = {
     let adjacentNodes = board.graph.adjList.get(node)
     adjacentNodes.forEach(adjacentNode => adjacentNode.canBuild = false)
     ctx.events.setActivePlayers({ currentPlayer: "initialRoad" })
-    console.log(G.settlements[ctx.currentPlayer], ctx.currentPlayer)
     return { ...G, settlements: { ...G.settlements, [ctx.currentPlayer]: [...G.settlements[ctx.currentPlayer], node] } }
   },
   placeRoad: (G, ctx, node) => {
     const currentPlayer = G.playOrder[ctx.currentPlayer]
     let currentSettlements = [...G.settlements[ctx.currentPlayer]]
-    console.log(currentSettlements)
     if (!board.graph.adjList.get(currentSettlements[currentSettlements.length - 1]).includes(node)) {
-      console.log(board.graph.adjList.get(currentSettlements[currentSettlements.length - 1]).forEach(n => console.log(n, node, n === node)))
       return INVALID_MOVE
     }
     // const settlements = [...currentPlayer.settlements[currentPlayer]]
@@ -87,7 +83,22 @@ const moves = {
   roll: (G, ctx, num) => {
     const currentPlayer = G.playOrder[ctx.currentPlayer]
     if (num === 7) {
-
+      // "0":"player"
+      let playerDiscardHash = {}
+      let willDiscard = false
+      for (let playerKey in G.playOrder) {
+        if (Object.keys(G.playOrder[playerKey].cards).reduce((acc, curr) => acc + G.playOrder[playerKey].cards[curr], 0) > 7) {
+          playerDiscardHash[playerKey] = 'discardFromSeven'
+          willDiscard = true
+        } else {
+          playerDiscardHash[playerKey] = null
+        }
+      }
+      if (willDiscard) {
+        ctx.events.setActivePlayers({ value: playerDiscardHash })
+      } else {
+        ctx.events.setActivePlayers({ currentPlayer: "strategize" })
+      }
     } else {
       const spoils = board.rolls[`${num}`]
       spoils.forEach(tile => {
@@ -95,14 +106,15 @@ const moves = {
           Object.keys(tile.edges).forEach(edge => {
             if (tile.edges[edge].placement) {
               let player = G.colorPlayerHash[tile.edges[edge].placement.color]
-              player.cards[board.terrainYields[tile.terrainType]] += tile.edges[edge].placement.itemType === "settlement" ? 1 : 2
+              player.cards[board.terrainYields[tile.terrainType]] += tile.edges[edge].placement.item === "settlement" ? 1 : 2
             }
           })
         }
       })
       currentPlayer.developmentCards.forEach(card => card.useable = card.type === "Victory Point" ? false : true)
+      ctx.events.setActivePlayers({ currentPlayer: "strategize" })
+
     }
-    ctx.events.setActivePlayers({ currentPlayer: "strategize" })
   },
   buildSettlement: (G, ctx, node) => {
     const currentPlayer = G.playOrder[ctx.currentPlayer]
@@ -187,7 +199,6 @@ const moves = {
   },
   buildRoad: (G, ctx, node, legalRoad) => {
     const currentPlayer = G.playOrder[ctx.currentPlayer]
-    console.log("hi",legalRoad, "hey", node)
     if (currentPlayer.cards["wood"] >= 1 && currentPlayer.cards["brick"] >= 1 && legalRoad) {
       currentPlayer.cards["wood"]--
       currentPlayer.cards["brick"]--
@@ -199,6 +210,17 @@ const moves = {
   completeTurn: (G, ctx, node) => {
     ctx.events.endTurn()
     ctx.events.setActivePlayers({ currentPlayer: "startTurn" })
+  },
+  discarding: (G, ctx, discards) => {
+    // discards = {"wood": 3, "brick": 1}
+    console.log("you may now discard")
+
+  },
+  setRobber: (G, ctx, tile) => {
+
+  },
+  rob: (G, ctx, player) => {
+
   }
 }
 
@@ -272,6 +294,11 @@ export const Catan = {
           completeTurn: moves.completeTurn,
           developmentCardAction: moves.developmentCardAction,
           buildRoad: moves.buildRoad
+        }
+      },
+      discardFromSeven: {
+        moves: {
+          discarding: moves.discarding
         }
       }
 

@@ -184,7 +184,6 @@ export default function DCDialog({ open, setOpen, dc, dcImg, player, development
     }
 
     const validUse = () => {
-        console.log(additionalStep, monopolyResource!==null)
         if (additionalStep === "Year of Plenty"){
             return Object.keys(yearOfPlentyInputs).reduce((acc, curr)=> acc + yearOfPlentyInputs[curr] ,0) !== 2
         } else if (additionalStep === "Monopoly"){
@@ -198,7 +197,7 @@ export default function DCDialog({ open, setOpen, dc, dcImg, player, development
         setAdditionalStep(dcType)
         // handleClose()
     }
-    console.log(additionalStep)
+
 
     return (
         <div>

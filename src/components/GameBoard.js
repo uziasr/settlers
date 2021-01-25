@@ -5,6 +5,7 @@ import { board } from "./gameLogic"
 import ActiveTurn from "./ActiveTurn"
 import Nodes from "./Nodes"
 import ScoreBoard from "./ScoreBoard"
+import DiscardDialog from "./DiscardDialog"
 import { roadSearch } from "../utils/roadSearch"
 
 // board.createBoard()
@@ -23,11 +24,10 @@ class Board extends React.Component {
                 board.tiles[18], board.tiles[6], board.tiles[5], board.tiles[14],
                 board.tiles[17], board.tiles[16], board.tiles[15]
             ],
-
-            renderAgain: false,
             buildType: null,
             currentPlayer: this.props.G.playOrder[this.props.ctx.currentPlayer],
-            potentialRoads: []
+            potentialRoads: [],
+            discarding: false
         }
         this.setBuildType = this.setBuildType.bind(this)
     }
@@ -75,6 +75,7 @@ class Board extends React.Component {
     }
 
     nodeAction = (node, legalRoad) => {
+        console.log(this.props.G, this.props.ctx)
         switch (this.state.buildType) {
             case "road": {
                 if (this.props.ctx.phase === "initialPlacings") {
@@ -98,7 +99,7 @@ class Board extends React.Component {
                 break
             }
             default: {
-                console.log("hi", node)
+                console.log("hi", node, this.props.G, this.props.ctx)
             }
         }
     }
@@ -113,6 +114,9 @@ class Board extends React.Component {
 
     resetMap() {
         usedNodes = new Map()
+    }
+    setDiscard = (bool) => {
+        this.setState({...this.state, discarding: bool})
     }
 
     render() {
@@ -194,6 +198,7 @@ class Board extends React.Component {
                     developmentCardAction={this.props.moves.developmentCardAction}
                     getDevelopmentCard={this.props.moves.getDevelopmentCard}
                 />
+                <DiscardDialog players={this.props.G.playOrder} discards={this.props.ctx.activePlayers} open={this.state.discarding} setOpen={this.setDiscard}/>
                 {this.resetMap()}
             </div>
         )
@@ -301,7 +306,6 @@ function piece_generator() {
     pieces.splice(Math.floor(Math.random() * (pieces.length + 1)), 0,
         { id: "X", number: 0, prob: 0, territory_type: "desert" });
 
-    console.log(pieces)
     return pieces;
 }
 

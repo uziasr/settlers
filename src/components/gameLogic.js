@@ -393,7 +393,7 @@ let board = new Board()
 board.createBoard()
 let developmentCards = new DevelopmentDeck()
 developmentCards.createDeck()
-console.log(board.graph.adjList)
+
 export { board, Player, developmentCards }
 
 

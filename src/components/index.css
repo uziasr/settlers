@@ -448,9 +448,9 @@ td {
     z-index: 1;
 }
 
-.debug-panel {
+/* .debug-panel {
     visibility: hidden;
-}
+} */
 
 .monopolyDialog {
     display: flex;

@@ -1,13 +1,18 @@
 import { Client } from 'boardgame.io/react';
 import { Catan } from './Game';
 import GameBoard from "./components/GameBoard"
+import { SocketIO } from 'boardgame.io/multiplayer'
 
-// import { h3ToGeo } from "h3-js";
 
-// console.log(h3ToGeo)
 
-// const App = Client({ game: Catan, board: TicTacToeBoard });
-const App = Client({ game: Catan, board: GameBoard, numPlayers: 4, });
+
+
+
+const App = Client({ 
+    game: Catan, 
+    board: GameBoard,
+    multiplayer: SocketIO({server: "localhost:8000"})
+});
 
 
 export default App;

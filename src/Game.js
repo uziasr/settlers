@@ -227,6 +227,7 @@ const moves = {
 export const Catan = {
   name: "settlers",
   setup: (ctx, setupData) => {
+    console.log(setupData)
     const tiles = board.tiles
     // const scoreboard = {};
     const players = [new Player("Bill", "white"), new Player("Alex", "red"), new Player("Fern", "blue"), new Player("Daren", "orange")]

@@ -7,7 +7,7 @@ import Nodes from "./Nodes"
 import ScoreBoard from "./ScoreBoard"
 import DiscardDialog from "./DiscardDialog"
 import { roadSearch } from "../utils/roadSearch"
-
+import CreateGame from "./lobby/CreateGame"
 // board.createBoard()
 
 let usedNodes = new Map()
@@ -16,6 +16,8 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         // this.usedNodes = new Map()
+        console.log(this.props.G)
+        // let { board } = this.props.G.board
         this.state = {
             board_pieces: [
                 board.tiles[9], board.tiles[10], board.tiles[11],
@@ -32,8 +34,6 @@ class Board extends React.Component {
         this.setBuildType = this.setBuildType.bind(this)
     }
 
-
-
     renderTerritory(i, players = null) {
         // console.log(this.props.ctx, this.props.G)
         let player = this.props.G.playOrder[this.props.ctx.currentPlayer]
@@ -46,14 +46,14 @@ class Board extends React.Component {
         let newRoadNode = null
         for (let nodeIndex in tile.edges) {
             if (usedNodes.get(tile.edges[nodeIndex]) === undefined) {
-                roadNode = potentialRoads.reduce((acc,curr) => {
-                    if (acc){
+                roadNode = potentialRoads.reduce((acc, curr) => {
+                    if (acc) {
                         return acc
-                    } else if (curr.to === tile.edges[nodeIndex]){
+                    } else if (curr.to === tile.edges[nodeIndex]) {
                         newRoadNode = (curr)
                         return tile.edges[nodeIndex]
                     }
-            },null)                
+                }, null)
                 // returnNodes[nodeIndex] = { node: tile.edges[nodeIndex], color: potentialRoads.includes(tile.edges[nodeIndex]) ? player.color : "black" }
                 returnNodes[nodeIndex] = { node: tile.edges[nodeIndex], color: roadNode ? player.color : "black" }
                 usedNodes.set(tile.edges[nodeIndex], true)
@@ -116,10 +116,11 @@ class Board extends React.Component {
         usedNodes = new Map()
     }
     setDiscard = (bool) => {
-        this.setState({...this.state, discarding: bool})
+        this.setState({ ...this.state, discarding: bool })
     }
 
     render() {
+        console.log(this.props.G, this.props.ctx)
         return (
             <div className="table">
                 <div className="boardAndPlayers">
@@ -198,7 +199,8 @@ class Board extends React.Component {
                     developmentCardAction={this.props.moves.developmentCardAction}
                     getDevelopmentCard={this.props.moves.getDevelopmentCard}
                 />
-                <DiscardDialog players={this.props.G.playOrder} discards={this.props.ctx.activePlayers} open={this.state.discarding} setOpen={this.setDiscard}/>
+                <CreateGame />
+                <DiscardDialog players={this.props.G.playOrder} discards={this.props.ctx.activePlayers} open={this.state.discarding} setOpen={this.setDiscard} />
                 {this.resetMap()}
             </div>
         )
